@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\{Service, Project, Testimonial, SiteSetting, Page, Post};
+use App\Models\{Service, Project, Testimonial, SiteSetting, Page, Post, GalleryItem};
 
 class DemoContentSeeder extends Seeder
 {
@@ -106,5 +106,28 @@ class DemoContentSeeder extends Seeder
                 ]
             );
         }
+
+        // Gallery items
+        $gallery = [
+            ['Tower Crane at Sunset','Cranes','https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=1600&auto=format&fit=crop'],
+            ['Steelwork Assembly','Structural','https://images.unsplash.com/photo-1581093458791-9d09d7285f30?q=80&w=1600&auto=format&fit=crop'],
+            ['Interior Fit-out','Interiors','https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop'],
+            ['Concrete Pour','Self-Perform','https://images.unsplash.com/photo-1522413452208-996ff3f3e740?q=80&w=1600&auto=format&fit=crop'],
+            ['Airport Terminal','Aviation','https://images.unsplash.com/photo-1508057198894-247b23fe5ade?q=80&w=1600&auto=format&fit=crop'],
+            ['Healthcare Expansion','Healthcare','https://images.unsplash.com/photo-1587351020409-1e3d54c0f0cc?q=80&w=1600&auto=format&fit=crop'],
+        ];
+        foreach ($gallery as $i => [$title, $cat, $img]) {
+            GalleryItem::updateOrCreate(
+                ['slug' => Str::slug($title)],
+                [
+                    'title' => $title,
+                    'category' => $cat,
+                    'image' => $img,
+                    'order' => $i,
+                    'is_published' => true,
+                ]
+            );
+        }
     }
 }
+

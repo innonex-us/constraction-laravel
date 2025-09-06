@@ -129,11 +129,11 @@
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
             <h2 class="text-2xl md:text-3xl font-bold">Latest News</h2>
-            <a href="/page/news" class="text-emerald-300 hover:text-emerald-200">All posts</a>
+            <a href="{{ route('news.index') }}" class="text-emerald-300 hover:text-emerald-200">All posts</a>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
             @forelse(($posts ?? collect()) as $post)
-                <article class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
+                <a href="{{ route('news.show', $post->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="aspect-[16/10] overflow-hidden bg-white/5">
                         <img src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                     </div>
@@ -144,7 +144,7 @@
                             <p class="text-slate-500 text-xs mt-3">{{ $post->published_at->format('M d, Y') }}</p>
                         @endif
                     </div>
-                </article>
+                </a>
             @empty
                 <p class="text-slate-400">No posts yet.</p>
             @endforelse

@@ -37,6 +37,8 @@
             <nav class="hidden md:flex items-center gap-6 text-sm">
                 <a href="/services" class="hover:text-emerald-300 transition">Services</a>
                 <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
+                <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
+                <a href="/news" class="hover:text-emerald-300 transition">News</a>
                 <a href="/page/about" class="hover:text-emerald-300 transition">About</a>
                 <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
                 <a href="/admin" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
@@ -62,6 +64,6 @@
 <script>
     AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
 </script>
+@stack('scripts')
 </body>
 </html>
-
