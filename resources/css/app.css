@@ -9,3 +9,22 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Homepage micro-animations */
+@keyframes marquee {
+    0% { transform: translateX(0) }
+    100% { transform: translateX(-50%) }
+}
+
+.marquee { overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent) }
+.marquee-track { display: inline-flex; gap: 2.5rem; animation: marquee 30s linear infinite }
+.marquee-track:hover { animation-play-state: paused }
+
+.shine-border { position: relative }
+.shine-border::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 16px; padding: 1px;
+    background: linear-gradient(90deg, color-mix(in oklab, var(--brand) 60%, transparent), color-mix(in oklab, var(--brand-2) 60%, transparent));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+}

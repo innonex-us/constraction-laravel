@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\{Service, Project, Testimonial, SiteSetting, Page};
+use App\Models\{Service, Project, Testimonial, SiteSetting, Page, Post};
 
 class DemoContentSeeder extends Seeder
 {
@@ -86,6 +86,25 @@ class DemoContentSeeder extends Seeder
                 'is_published' => true,
             ]
         );
+
+        // Posts
+        $news = [
+            ['Safety Milestone Reached', 'We achieved 1M work hours without a lost-time incident.'],
+            ['Sustainability Initiative', 'Our new net-zero jobsite pilot reduces emissions by 40%.'],
+            ['Community Impact', 'Local apprenticeship program expands with 25 new trainees.'],
+        ];
+        foreach ($news as [$title, $excerpt]) {
+            Post::updateOrCreate(
+                ['slug' => Str::slug($title)],
+                [
+                    'title' => $title,
+                    'excerpt' => $excerpt,
+                    'body' => $excerpt . "\n\nLearn more about our efforts to build better.",
+                    'is_published' => true,
+                    'published_at' => now()->subDays(rand(1,30)),
+                    'featured_image' => 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop',
+                ]
+            );
+        }
     }
 }
-

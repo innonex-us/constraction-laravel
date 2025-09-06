@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Page extends Model
 {
@@ -13,4 +14,13 @@ class Page extends Model
     protected $casts = [
         'is_published' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Page $page) {
+            if (empty($page->slug) && ! empty($page->title)) {
+                $page->slug = Str::slug($page->title);
+            }
+        });
+    }
 }

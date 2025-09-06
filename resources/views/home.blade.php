@@ -60,7 +60,7 @@
                 <a href="{{ route('services.show', $service->slug) }}" class="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="flex items-center justify-between">
                         <h3 class="text-xl font-semibold">{{ $service->name }}</h3>
-                        <span class="i-heroicons-arrow-right group-hover:translate-x-1 transition"></span>
+                        <span aria-hidden="true" class="text-slate-400 group-hover:translate-x-1 transition">→</span>
                     </div>
                     <p class="mt-2 text-slate-400">{{ $service->excerpt }}</p>
                 </a>
@@ -105,5 +105,62 @@
             @endforelse
         </div>
     </section>
-@endsection
 
+    {{-- Clients marquee --}}
+    <section class="mx-auto max-w-7xl px-4 py-8">
+        <div class="marquee rounded-2xl border border-white/10 bg-white/5 p-5" data-aos="fade-up">
+            <div class="marquee-track">
+                @php($logos = [
+                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=HealthCo',
+                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=TechCorp',
+                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=City+Works',
+                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=Port+Authority',
+                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=EduTrust',
+                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=BioLabs',
+                ])
+                @foreach(array_merge($logos, $logos) as $logo)
+                    <img src="{{ $logo }}" alt="Client" class="h-8 opacity-70 hover:opacity-100 transition" />
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- Latest news / insights --}}
+    <section class="mx-auto max-w-7xl px-4 py-16">
+        <div class="flex items-end justify-between gap-6 mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold">Latest News</h2>
+            <a href="/page/news" class="text-emerald-300 hover:text-emerald-200">All posts</a>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            @forelse(($posts ?? collect()) as $post)
+                <article class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
+                    <div class="aspect-[16/10] overflow-hidden bg-white/5">
+                        <img src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-semibold">{{ $post->title }}</h3>
+                        <p class="text-slate-400 text-sm mt-1">{{ $post->excerpt }}</p>
+                        @if($post->published_at)
+                            <p class="text-slate-500 text-xs mt-3">{{ $post->published_at->format('M d, Y') }}</p>
+                        @endif
+                    </div>
+                </article>
+            @empty
+                <p class="text-slate-400">No posts yet.</p>
+            @endforelse
+        </div>
+    </section>
+
+    {{-- CTA banner --}}
+    <section class="mx-auto max-w-7xl px-4 pb-20">
+        <div class="shine-border rounded-2xl p-0.5" data-aos="zoom-in">
+            <div class="rounded-2xl bg-gradient-to-br from-emerald-500/10 to-sky-500/10 px-6 py-10 md:px-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-2xl md:text-3xl font-bold">Ready to build something great?</h3>
+                    <p class="text-slate-300 mt-2">Let’s discuss your project and how we can help.</p>
+                </div>
+                <a href="/contact" class="px-6 py-3 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">Get in touch</a>
+            </div>
+        </div>
+    </section>
+@endsection

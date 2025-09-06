@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -14,4 +15,13 @@ class Post extends Model
         'published_at' => 'datetime',
         'is_published' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Post $post) {
+            if (empty($post->slug) && ! empty($post->title)) {
+                $post->slug = Str::slug($post->title);
+            }
+        });
+    }
 }

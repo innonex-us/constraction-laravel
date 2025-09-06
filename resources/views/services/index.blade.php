@@ -9,7 +9,7 @@
             <a href="{{ route('services.show', $service->slug) }}" class="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xl font-semibold">{{ $service->name }}</h3>
-                    <span class="i-heroicons-arrow-right group-hover:translate-x-1 transition"></span>
+                    <span aria-hidden="true" class="text-slate-400 group-hover:translate-x-1 transition">→</span>
                 </div>
                 <p class="mt-2 text-slate-400">{{ $service->excerpt }}</p>
             </a>
@@ -20,4 +20,3 @@
     <div class="mt-8">{{ $services->links() }}</div>
   </section>
 @endsection
-
