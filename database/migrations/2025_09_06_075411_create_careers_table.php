@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('careers', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('location')->nullable();
+            $table->string('department')->nullable();
+            $table->longText('description');
+            $table->string('apply_url')->nullable();
+            $table->boolean('is_open')->default(true);
+            $table->date('posted_at')->nullable();
             $table->timestamps();
         });
     }
