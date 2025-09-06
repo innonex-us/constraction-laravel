@@ -8,9 +8,9 @@
     @if($post->published_at)
         <p class="text-slate-500 text-sm mt-1">{{ $post->published_at->format('F d, Y') }}</p>
     @endif
-    @if($post->featured_image)
+    @if($post->featured_image_url)
         <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-            <img loading="lazy" src="{{ $post->featured_image }}" class="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $post->featured_image_url }}" @if($post->featured_image_srcset) data-srcset="{{ $post->featured_image_srcset }}" sizes="(min-width:1024px) 60vw, 100vw" @endif class="w-full h-full object-cover" />
         </div>
     @endif
     <article class="prose prose-invert mt-6">

@@ -34,7 +34,7 @@
 <body class="min-h-dvh bg-slate-950 text-slate-100 gradient">
 <header class="sticky top-0 z-50">
     <div class="glass border-b border-white/5">
-        <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
+        <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
                 @if(!empty($settings?->logo_path))
                     <img src="{{ asset($settings->logo_path) }}" alt="Logo" class="h-8 w-auto" />
@@ -50,6 +50,21 @@
                 <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
                 <a href="/admin" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
             </nav>
+            <button id="menu-btn" class="md:hidden inline-flex items-center justify-center rounded-md border border-white/10 px-3 py-2" aria-expanded="false" aria-controls="mobile-nav">
+                <span class="sr-only">Open menu</span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-200"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-nav" class="md:hidden hidden bg-black/60 border-b border-white/10">
+        <div class="mx-auto max-w-7xl px-4 py-3 grid gap-3 text-sm">
+            <a href="/services" class="hover:text-emerald-300 transition">Services</a>
+            <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
+            <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
+            <a href="/news" class="hover:text-emerald-300 transition">News</a>
+            <a href="/page/about" class="hover:text-emerald-300 transition">About</a>
+            <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
+            <a href="/admin" class="px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-max">Admin</a>
         </div>
     </div>
 </header>
@@ -164,6 +179,32 @@
 
 <script>
     AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+    // Mobile nav toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (menuBtn && mobileNav) {
+        const open = () => { mobileNav.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); menuBtn.setAttribute('aria-expanded','true'); };
+        const close = () => { mobileNav.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); menuBtn.setAttribute('aria-expanded','false'); };
+        menuBtn.addEventListener('click', () => mobileNav.classList.contains('hidden') ? open() : close());
+        mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+        window.addEventListener('resize', () => { if (window.innerWidth >= 768) close(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    }
+    // Lightweight lazy loader: for images with data-src / data-srcset
+    const lazyImgs = Array.from(document.querySelectorAll('img[data-src], img[data-srcset]'));
+    if ('IntersectionObserver' in window && lazyImgs.length) {
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const img = entry.target;
+                if (img.dataset.src) img.src = img.dataset.src;
+                if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+                img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+                io.unobserve(img);
+            });
+        }, { rootMargin: '200px' });
+        lazyImgs.forEach(img => io.observe(img));
+    }
 </script>
 @stack('scripts')
 

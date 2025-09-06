@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use App\Models\{Page, Service, Project, GalleryItem};
+use App\Support\ImageHelper;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -164,3 +165,52 @@ Artisan::command('import:aac {base} {--max=40}', function (string $base) {
 
     $this->info("Import done. Visited {$count} pages.");
 })->purpose('Import pages/services/projects from the AAC WordPress site');
+
+Artisan::command('images:variants', function () {
+    $this->info('Generating responsive variants for gallery images...');
+    $count = 0;
+    foreach (GalleryItem::whereNotNull('image')->cursor() as $item) {
+        if ($item->image && ! str_starts_with($item->image, 'http')) {
+            ImageHelper::generateVariants($item->image);
+            $count++;
+        }
+    }
+    $this->info("Done. Processed {$count} images.");
+})->purpose('Generate responsive variants for gallery images');
+
+Artisan::command('images:mirror-remote', function () {
+    $client = new GuzzleHttp\Client(['timeout' => 30, 'connect_timeout' => 10, 'http_errors' => false]);
+    $map = [
+        [App\Models\Service::class, 'image', 'services'],
+        [App\Models\Project::class, 'featured_image', 'projects'],
+        [App\Models\Page::class, 'hero_image', 'pages'],
+        [App\Models\Post::class, 'featured_image', 'posts'],
+        [App\Models\GalleryItem::class, 'image', 'gallery'],
+    ];
+    $count = 0; $skipped = 0; $failed = 0;
+    foreach ($map as [$cls, $col, $dir]) {
+        foreach ($cls::cursor() as $record) {
+            $url = (string) ($record->{$col} ?? '');
+            if (! $url || ! str_starts_with($url, 'http')) { $skipped++; continue; }
+            try {
+                $res = $client->get($url);
+                if ($res->getStatusCode() >= 400) { $failed++; continue; }
+                $body = (string) $res->getBody();
+                $ext = strtolower(pathinfo(parse_url($url, PHP_URL_PATH) ?? '', PATHINFO_EXTENSION)) ?: 'jpg';
+                if (! in_array($ext, ['jpg','jpeg','png','webp'])) $ext = 'jpg';
+                $name = Str::slug(pathinfo(parse_url($url, PHP_URL_PATH) ?? ('file-' . uniqid()), PATHINFO_FILENAME)) ?: ('file-' . uniqid());
+                $path = $dir . '/' . $name . '.' . $ext;
+                \Storage::disk('public')->put($path, $body);
+                $record->{$col} = $path;
+                $record->save();
+                ImageHelper::generateVariants($path);
+                $count++;
+                $this->line("Saved -> {$path}");
+            } catch (\Throwable $e) {
+                $failed++;
+                $this->warn('Fail: ' . $e->getMessage());
+            }
+        }
+    }
+    $this->info("Done. Saved {$count}, skipped {$skipped}, failed {$failed}.");
+})->purpose('Mirror remote images into local storage for optimization');

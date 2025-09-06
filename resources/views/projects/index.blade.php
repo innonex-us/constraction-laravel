@@ -31,7 +31,8 @@
         @forelse($projects as $project)
             <a href="{{ route('projects.show', $project->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                 <div class="aspect-video overflow-hidden">
-                    <img loading="lazy" src="{{ $project->featured_image ?: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                    @php($imgUrl = $project->featured_image_url ?: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop')
+                    <img loading="lazy" decoding="async" fetchpriority="low" src="{{ $imgUrl }}" @if($project->featured_image_srcset) srcset="{{ $project->featured_image_srcset }}" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" @endif class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                 </div>
                 <div class="p-5">
                     <h3 class="text-lg font-semibold">{{ $project->title }}</h3>

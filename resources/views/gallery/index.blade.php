@@ -31,10 +31,12 @@
     </div>
     @endif
 
-    <div id="gallery-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
+    <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($items as $item)
-            <a href="#" class="group block mb-4 avoid-break relative overflow-hidden rounded-xl border border-white/10 hover:border-white/30 transition" data-lightbox-src="{{ $item->image }}" data-lightbox-caption="{{ $item->title }}">
-                <img loading="lazy" src="{{ $item->image }}" alt="{{ $item->title }}" class="w-full h-auto block group-hover:opacity-95 transition" />
+            <a href="#" class="group relative overflow-hidden rounded-xl border border-white/10 hover:border-white/30 transition" data-lightbox-src="{{ $item->image_url }}" data-lightbox-caption="{{ $item->title }}">
+                <div class="aspect-[4/3]">
+                    <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $item->image_url }}" @if($item->image_srcset) data-srcset="{{ $item->image_srcset }}" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" @endif alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:opacity-95 transition" />
+                </div>
                 <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
                     <div class="text-sm font-medium">{{ $item->title }}</div>
                     @if($item->category)

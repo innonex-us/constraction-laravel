@@ -26,6 +26,7 @@ class GalleryItemForm
                         ->disk('public')
                         ->imageEditor()
                         ->required()
+                        ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); })
                         ->columnSpan(6),
                     TextInput::make('order')->numeric()->default(0)->columnSpan(3),
                     Toggle::make('is_published')->default(true)->columnSpan(3),
@@ -33,4 +34,3 @@ class GalleryItemForm
             ]);
     }
 }
-

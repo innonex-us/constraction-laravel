@@ -35,8 +35,8 @@
                 </div>
                 <div class="relative">
                     <div class="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                        @if($page->hero_image)
-                            <img src="{{ $page->hero_image }}" class="w-full h-full object-cover" />
+                        @if($page->hero_image_url)
+                            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $page->hero_image_url }}" @if($page->hero_image_srcset) data-srcset="{{ $page->hero_image_srcset }}" sizes="(min-width:1024px) 50vw, 100vw" @endif class="w-full h-full object-cover" />
                         @else
                             <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover" />
                         @endif

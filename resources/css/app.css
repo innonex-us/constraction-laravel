@@ -59,6 +59,11 @@
 /* Utilities */
 .avoid-break { break-inside: avoid; }
 
+/* Global responsive media rules */
+img, video { max-width: 100%; height: auto; }
+iframe, embed, object { max-width: 100%; }
+a > img { display: block; }
+
 /* Typography tuning for better readability */
 body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 .prose { max-width: 70ch; }
@@ -82,3 +87,23 @@ body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 }
 .prose code { padding: .15rem .35rem; border-radius: .375rem; }
 .prose pre { background: rgb(2 6 23 / .6); border: 1px solid rgb(255 255 255 / .06); }
+
+/* Fixed presentation for images inside service content */
+.service-content img {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;     /* fixed visual resolution */
+  object-fit: cover;        /* crop overflowing sides */
+  border-radius: .75rem;    /* match site aesthetic */
+  margin-inline: auto;
+}
+.service-content figure { margin: 1.25rem 0 }
+.service-content figure img { margin: 0 }
+.service-content .wp-caption, .service-content figcaption { color: rgb(148 163 184); font-size: .875rem; text-align: center }
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+html, body { overflow-x: hidden; }
+img[loading="lazy"] { content-visibility: auto; }
+.prose img { border-radius: .75rem; height: auto; }
+.prose table { display: block; max-width: 100%; overflow-x: auto; }
+.prose iframe, .prose video { max-width: 100%; height: auto; }
