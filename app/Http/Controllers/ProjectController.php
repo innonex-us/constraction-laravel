@@ -40,4 +40,14 @@ class ProjectController extends Controller
         $related = Project::where('id', '!=', $project->id)->latest('completed_at')->take(6)->get();
         return view('projects.show', compact('project', 'related'));
     }
+
+    public function map(): View
+    {
+        $projects = Project::query()
+            ->whereNotNull('lat')
+            ->whereNotNull('lng')
+            ->select('title','slug','lat','lng','location','featured_image')
+            ->get();
+        return view('projects.map', compact('projects'));
+    }
 }

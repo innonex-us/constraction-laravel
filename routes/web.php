@@ -8,6 +8,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\SafetyController;
+use App\Http\Controllers\PartnersController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -26,3 +28,10 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+
+Route::get('/safety', [SafetyController::class, 'index'])->name('safety.index');
+
+Route::get('/partners/prequal', [PartnersController::class, 'prequalForm'])->name('partners.prequal');
+Route::post('/partners/prequal', [PartnersController::class, 'prequalSubmit'])->name('partners.prequal.submit');
+
+Route::get('/projects/map', [ProjectController::class, 'map'])->name('projects.map');

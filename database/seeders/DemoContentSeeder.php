@@ -49,11 +49,11 @@ class DemoContentSeeder extends Seeder
         }
 
         $projects = [
-            ['City Hospital Expansion', 'New York, NY', 'Healthcare'],
-            ['Tech Campus Phase II', 'Austin, TX', 'Commercial'],
-            ['International Terminal Renovation', 'Seattle, WA', 'Aviation'],
+            ['City Hospital Expansion', 'New York, NY', 'Healthcare', 40.713, -74.006],
+            ['Tech Campus Phase II', 'Austin, TX', 'Commercial', 30.267, -97.743],
+            ['International Terminal Renovation', 'Seattle, WA', 'Aviation', 47.606, -122.332],
         ];
-        foreach ($projects as $i => [$title, $loc, $cat]) {
+        foreach ($projects as $i => [$title, $loc, $cat, $lat, $lng]) {
             Project::updateOrCreate(
                 ['slug' => Str::slug($title)],
                 [
@@ -65,6 +65,8 @@ class DemoContentSeeder extends Seeder
                     'is_featured' => $i < 2,
                     'completed_at' => now()->subMonths(6 + $i * 3),
                     'featured_image' => 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop',
+                    'lat' => $lat,
+                    'lng' => $lng,
                 ]
             );
         }
@@ -137,6 +139,19 @@ class DemoContentSeeder extends Seeder
             );
         }
 
+        // Safety sample
+        \App\Models\SafetyRecord::updateOrCreate(
+            ['year' => (int) now()->format('Y') - 1],
+            [
+                'emr' => 0.62,
+                'trir' => 0.90,
+                'ltir' => 0.15,
+                'total_hours' => 1000000,
+                'osha_recordables' => 3,
+                'description' => 'Industry-leading safety performance built on continuous training and hazard mitigation.'
+            ]
+        );
+
         // Badges / certifications
         $badges = [
             ['OSHA Certified', 'https://dummyimage.com/120x48/0b1220/94a3b8&text=OSHA', null],
@@ -157,4 +172,3 @@ class DemoContentSeeder extends Seeder
         }
     }
 }
-
