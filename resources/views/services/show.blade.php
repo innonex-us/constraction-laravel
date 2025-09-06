@@ -10,8 +10,8 @@
             <img loading="lazy" src="{{ $service->image }}" class="w-full h-full object-cover" />
         </div>
     @endif
-    <article class="prose prose-invert max-w-none mt-6">
-        {!! nl2br(e($service->content)) !!}
+    <article class="prose prose-invert mt-6">
+        {!! $service->content !!}
     </article>
 
     @if(isset($related) && $related->count())

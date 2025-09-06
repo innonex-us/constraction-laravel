@@ -59,11 +59,105 @@
     @yield('content')
 </main>
 
-<footer class="mt-20 border-t border-white/5 bg-black/40">
-    <div class="mx-auto max-w-7xl px-4 py-10 text-sm text-slate-400">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<footer class="mt-20 border-t border-white/5 bg-black/50">
+    <div class="hazard-tape"></div>
+    <div class="mx-auto max-w-7xl px-4 py-12">
+        <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+            <div>
+                <div class="flex items-center gap-2">
+                    @if(!empty($settings?->logo_path))
+                        <img src="{{ asset($settings->logo_path) }}" alt="Logo" class="h-8 w-auto" />
+                    @endif
+                    <div class="text-xl font-semibold">{{ $settings->site_name ?? 'Construction Co.' }}</div>
+                </div>
+                @if(!empty($settings?->headline))
+                    <p class="text-slate-400 mt-3">{{ $settings->headline }}</p>
+                @endif
+                <div class="mt-5 text-sm space-y-2 text-slate-300">
+                    @if(!empty($settings?->phone))
+                        <div>Phone: <a class="text-emerald-300 hover:text-emerald-200" href="tel:{{ preg_replace('/\D+/', '', $settings->phone) }}">{{ $settings->phone }}</a></div>
+                    @endif
+                    @if(!empty($settings?->email))
+                        <div>Email: <a class="text-emerald-300 hover:text-emerald-200" href="mailto:{{ $settings->email }}">{{ $settings->email }}</a></div>
+                    @endif
+                    @if(!empty($settings?->address))
+                        <div class="text-slate-400">{{ $settings->address }}</div>
+                    @endif
+                </div>
+                <div class="mt-5">
+                    <a href="/contact" class="inline-block px-4 py-2 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">Get a quote</a>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-sm uppercase tracking-wider text-slate-400">Services</div>
+                @php($footerServices = \App\Models\Service::query()->where('is_active', true)->orderBy('order')->take(6)->get())
+                <ul class="mt-3 space-y-2 text-slate-300">
+                    @forelse($footerServices as $srv)
+                        <li><a class="hover:text-emerald-300" href="{{ route('services.show', $srv->slug) }}">{{ $srv->name }}</a></li>
+                    @empty
+                        <li class="text-slate-500">Add services in Admin → Services</li>
+                    @endforelse
+                </ul>
+            </div>
+
+            <div>
+                <div class="text-sm uppercase tracking-wider text-slate-400">Company</div>
+                <ul class="mt-3 space-y-2 text-slate-300">
+                    <li><a class="hover:text-emerald-300" href="/page/about">About</a></li>
+                    <li><a class="hover:text-emerald-300" href="{{ route('safety.index') }}">Safety</a></li>
+                    <li><a class="hover:text-emerald-300" href="{{ route('projects.index') }}">Projects</a></li>
+                    <li><a class="hover:text-emerald-300" href="{{ route('gallery.index') }}">Gallery</a></li>
+                    <li><a class="hover:text-emerald-300" href="{{ route('news.index') }}">News</a></li>
+                    <li><a class="hover:text-emerald-300" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="text-sm uppercase tracking-wider text-slate-400">Resources</div>
+                <ul class="mt-3 space-y-2 text-slate-300">
+                    <li><a class="hover:text-emerald-300" href="{{ route('projects.map') }}">Projects Map</a></li>
+                    <li><a class="hover:text-emerald-300" href="{{ route('partners.prequal') }}">Trade Partner Prequal</a></li>
+                    <li><a class="hover:text-emerald-300" href="/admin">Admin</a></li>
+                </ul>
+                @php($links = (array)($settings->social_links ?? []))
+                @if(!empty($links))
+                <div class="mt-4 flex items-center gap-3">
+                    @if(!empty($links['linkedin']))
+                        <a href="{{ $links['linkedin'] }}" target="_blank" rel="noopener" class="text-slate-400 hover:text-emerald-300" aria-label="LinkedIn">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.2 2.3-2.47 4.73-2.47 5.06 0 6 3.33 6 7.66V24h-5v-7.6c0-1.8-.03-4.12-2.5-4.12-2.5 0-2.88 1.95-2.88 3.98V24h-5V8z"/></svg>
+                        </a>
+                    @endif
+                    @if(!empty($links['facebook']))
+                        <a href="{{ $links['facebook'] }}" target="_blank" rel="noopener" class="text-slate-400 hover:text-emerald-300" aria-label="Facebook">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2.3c0-2 1.2-3.1 3-3.1.9 0 1.8.16 1.8.16v2h-1c-1 0-1.4.63-1.4 1.3V12h2.4l-.4 3h-2v7A10 10 0 0 0 22 12"/></svg>
+                        </a>
+                    @endif
+                    @if(!empty($links['instagram']))
+                        <a href="{{ $links['instagram'] }}" target="_blank" rel="noopener" class="text-slate-400 hover:text-emerald-300" aria-label="Instagram">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.9.26 2.4.43.6.23 1 .5 1.5 1 .5.5.8.9 1 1.5.17.5.37 1.2.43 2.4.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.26 1.9-.43 2.4-.23.6-.5 1-1 1.5-.5.5-.9.8-1.5 1-.5.17-1.2.37-2.4.43-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.9-.26-2.4-.43-.6-.23-1-.5-1.5-1-.5-.5-.8-.9-1-1.5-.17-.5-.37-1.2-.43-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.26-1.9.43-2.4.23-.6.5-1 1-1.5.5-.5.9-.8 1.5-1 .5-.17 1.2-.37 2.4-.43C8.4 2.2 8.8 2.2 12 2.2m0 1.8c-3.1 0-3.5 0-4.7.07-1 .05-1.6.22-2 .36-.5.2-.8.4-1.2.8-.3.3-.6.7-.8 1.2-.14.3-.31 1-.36 2-.07 1.2-.07 1.6-.07 4.7s0 3.5.07 4.7c.05 1 .22 1.6.36 2 .2.5.4.8.8 1.2.3.3.7.6 1.2.8.3.14 1 .31 2 .36 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c1-.05 1.6-.22 2-.36.5-.2.8-.4 1.2-.8.3-.3.6-.7.8-1.2.14-.3.31-1 .36-2 .07-1.2.07-1.6.07-4.7s0-3.5-.07-4.7c-.05-1-.22-1.6-.36-2-.2-.5-.4-.8-.8-1.2-.3-.3-.7-.6-1.2-.8-.3-.14-1-.31-2-.36-1.2-.07-1.6-.07-4.7-.07m0 2.6a5.4 5.4 0 1 1 0 10.8 5.4 5.4 0 0 1 0-10.8m0 1.8a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2m5.5-2.3a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6"/></svg>
+                        </a>
+                    @endif
+                    @if(!empty($links['x']) || !empty($links['twitter']))
+                        @php($tw = $links['x'] ?? $links['twitter'])
+                        <a href="{{ $tw }}" target="_blank" rel="noopener" class="text-slate-400 hover:text-emerald-300" aria-label="Twitter">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.6 7.6L22 22h-6.8l-4.6-5.9L5 22H2.2l7.1-8.1L2 2h6.9l4.1 5.4L18.2 2Zm-1.2 18h1.8L7.1 4H5.2l11.8 16Z"/></svg>
+                        </a>
+                    @endif
+                    @if(!empty($links['youtube']))
+                        <a href="{{ $links['youtube'] }}" target="_blank" rel="noopener" class="text-slate-400 hover:text-emerald-300" aria-label="YouTube">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"/></svg>
+                        </a>
+                    @endif
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+    <div class="border-t border-white/10">
+        <div class="mx-auto max-w-7xl px-4 py-5 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-3">
             <p>&copy; {{ now()->year }} {{ $settings->site_name ?? 'Construction Co.' }}. All rights reserved.</p>
-            <p>Built with Laravel + Filament. Inspired by industry leaders.</p>
+            <p>Built with Laravel + Filament • <a class="text-emerald-300 hover:text-emerald-200" href="{{ route('safety.index') }}">Safety</a> • <a class="text-emerald-300 hover:text-emerald-200" href="{{ route('partners.prequal') }}">Prequalify</a></p>
         </div>
     </div>
 </footer>

@@ -13,8 +13,8 @@
             <img loading="lazy" src="{{ $post->featured_image }}" class="w-full h-full object-cover" />
         </div>
     @endif
-    <article class="prose prose-invert max-w-none mt-6">
-        {!! nl2br(e($post->body)) !!}
+    <article class="prose prose-invert mt-6">
+        {!! $post->body !!}
     </article>
 
     @if(isset($latest) && $latest->count())
