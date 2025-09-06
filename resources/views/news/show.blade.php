@@ -10,7 +10,7 @@
     @endif
     @if($post->featured_image)
         <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-            <img src="{{ $post->featured_image }}" class="w-full h-full object-cover" />
+            <img loading="lazy" src="{{ $post->featured_image }}" class="w-full h-full object-cover" />
         </div>
     @endif
     <article class="prose prose-invert max-w-none mt-6">
@@ -32,4 +32,3 @@
     @endif
   </section>
 @endsection
-

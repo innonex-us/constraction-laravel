@@ -8,7 +8,7 @@
         @forelse($items as $item)
             <button class="group relative rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-lightbox data-src="{{ $item->image }}" data-caption="{{ $item->title }}">
                 <div class="aspect-[4/3] overflow-hidden">
-                    <img src="{{ $item->image }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                    <img loading="lazy" src="{{ $item->image }}" alt="{{ $item->title }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                 </div>
                 <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
                     <div class="text-sm font-medium">{{ $item->title }}</div>
@@ -62,4 +62,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
-

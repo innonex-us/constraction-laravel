@@ -4,7 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\{Service, Project, Testimonial, SiteSetting, Page, Post, GalleryItem};
+use App\Models\Service;
+use App\Models\Project;
+use App\Models\Testimonial;
+use App\Models\SiteSetting;
+use App\Models\Page;
+use App\Models\Post;
+use App\Models\GalleryItem;
+use App\Models\Badge;
 
 class DemoContentSeeder extends Seeder
 {
@@ -42,16 +49,17 @@ class DemoContentSeeder extends Seeder
         }
 
         $projects = [
-            ['City Hospital Expansion', 'New York, NY'],
-            ['Tech Campus Phase II', 'Austin, TX'],
-            ['International Terminal Renovation', 'Seattle, WA'],
+            ['City Hospital Expansion', 'New York, NY', 'Healthcare'],
+            ['Tech Campus Phase II', 'Austin, TX', 'Commercial'],
+            ['International Terminal Renovation', 'Seattle, WA', 'Aviation'],
         ];
-        foreach ($projects as $i => [$title, $loc]) {
+        foreach ($projects as $i => [$title, $loc, $cat]) {
             Project::updateOrCreate(
                 ['slug' => Str::slug($title)],
                 [
                     'title' => $title,
                     'location' => $loc,
+                    'category' => $cat,
                     'excerpt' => 'A complex, multi‑phase program delivered ahead of schedule.',
                     'status' => 'completed',
                     'is_featured' => $i < 2,
@@ -125,6 +133,25 @@ class DemoContentSeeder extends Seeder
                     'image' => $img,
                     'order' => $i,
                     'is_published' => true,
+                ]
+            );
+        }
+
+        // Badges / certifications
+        $badges = [
+            ['OSHA Certified', 'https://dummyimage.com/120x48/0b1220/94a3b8&text=OSHA', null],
+            ['LEED AP', 'https://dummyimage.com/120x48/0b1220/94a3b8&text=LEED', 'https://www.usgbc.org/leed'],
+            ['AGC Member', 'https://dummyimage.com/120x48/0b1220/94a3b8&text=AGC', 'https://www.agc.org/'],
+        ];
+        foreach ($badges as $i => [$name, $img, $url]) {
+            Badge::updateOrCreate(
+                ['slug' => Str::slug($name)],
+                [
+                    'name' => $name,
+                    'image' => $img,
+                    'url' => $url,
+                    'order' => $i,
+                    'is_active' => true,
                 ]
             );
         }

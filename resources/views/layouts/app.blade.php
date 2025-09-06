@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ $title ?? ($settings->site_name ?? 'Construction Co.') }}</title>
     <meta name="description" content="{{ $metaDescription ?? ($settings->headline ?? 'We build with excellence.') }}" />
+    <meta property="og:title" content="{{ $title ?? ($settings->site_name ?? 'Construction Co.') }}" />
+    <meta property="og:description" content="{{ $metaDescription ?? ($settings->headline ?? '') }}" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="{{ $settings->primary_color ?? '#10b981' }}" />
+    <link rel="canonical" href="{{ url()->current() }}" />
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +29,7 @@
             radial-gradient(900px 300px at 90% -10%, color-mix(in oklab, var(--brand-2) 35%, transparent), transparent);
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module" defer></script>
 </head>
 <body class="min-h-dvh bg-slate-950 text-slate-100 gradient">
 <header class="sticky top-0 z-50">
@@ -65,5 +72,9 @@
     AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
 </script>
 @stack('scripts')
+
+<a href="/contact" class="fixed bottom-5 right-5 z-50 rounded-full bg-emerald-500 text-slate-900 font-semibold shadow-lg hover:bg-emerald-400 transition px-5 py-3">
+    Contact Us
+</a>
 </body>
 </html>

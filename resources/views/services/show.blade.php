@@ -7,7 +7,7 @@
     <h1 class="mt-2 text-3xl md:text-4xl font-bold">{{ $service->name }}</h1>
     @if($service->image)
         <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-            <img src="{{ $service->image }}" class="w-full h-full object-cover" />
+            <img loading="lazy" src="{{ $service->image }}" class="w-full h-full object-cover" />
         </div>
     @endif
     <article class="prose prose-invert max-w-none mt-6">
@@ -29,4 +29,3 @@
     @endif
   </section>
 @endsection
-

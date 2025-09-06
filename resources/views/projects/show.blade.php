@@ -8,7 +8,7 @@
     <p class="text-slate-400">{{ $project->location }} @if($project->client) • Client: {{ $project->client }} @endif</p>
     @if($project->featured_image)
         <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-            <img src="{{ $project->featured_image }}" class="w-full h-full object-cover" />
+            <img loading="lazy" src="{{ $project->featured_image }}" class="w-full h-full object-cover" />
         </div>
     @endif
     <article class="prose prose-invert max-w-none mt-6">
@@ -30,4 +30,3 @@
     @endif
   </section>
 @endsection
-

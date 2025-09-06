@@ -8,7 +8,7 @@
         @forelse($posts as $post)
             <a href="{{ route('news.show', $post->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                 <div class="aspect-[16/10] overflow-hidden bg-white/5">
-                    <img src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                    <img loading="lazy" src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                 </div>
                 <div class="p-5">
                     <h3 class="text-lg font-semibold">{{ $post->title }}</h3>
@@ -25,4 +25,3 @@
     <div class="mt-8">{{ $posts->links() }}</div>
 </section>
 @endsection
-

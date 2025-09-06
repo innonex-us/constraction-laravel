@@ -50,6 +50,24 @@
         </div>
     </section>
 
+    @php($badges = \App\Models\Badge::query()->where('is_active', true)->orderBy('order')->get())
+    @if($badges->count())
+    <section class="mx-auto max-w-7xl px-4 py-8">
+        <h3 class="text-xl font-semibold mb-4">Certifications & Affiliations</h3>
+        <div class="flex flex-wrap items-center gap-6 opacity-80 hover:opacity-100 transition">
+            @foreach($badges as $b)
+                @if($b->url)
+                    <a href="{{ $b->url }}" target="_blank" rel="noopener" class="block">
+                        <img loading="lazy" src="{{ $b->image }}" alt="{{ $b->name }}" class="h-10 w-auto" />
+                    </a>
+                @else
+                    <img loading="lazy" src="{{ $b->image }}" alt="{{ $b->name }}" class="h-10 w-auto" />
+                @endif
+            @endforeach
+        </div>
+    </section>
+    @endif
+
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
             <h2 class="text-2xl md:text-3xl font-bold">Services</h2>
@@ -79,7 +97,7 @@
             @forelse($projects as $project)
                 <a href="{{ route('projects.show', $project->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="aspect-video overflow-hidden">
-                        <img src="{{ $project->featured_image ?: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                        <img loading="lazy" src="{{ $project->featured_image ?: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                     </div>
                     <div class="p-5">
                         <h3 class="text-lg font-semibold">{{ $project->title }}</h3>
@@ -119,7 +137,7 @@
                     'https://dummyimage.com/140x48/0b1220/94a3b8&text=BioLabs',
                 ])
                 @foreach(array_merge($logos, $logos) as $logo)
-                    <img src="{{ $logo }}" alt="Client" class="h-8 opacity-70 hover:opacity-100 transition" />
+                    <img loading="lazy" src="{{ $logo }}" alt="Client" class="h-8 opacity-70 hover:opacity-100 transition" />
                 @endforeach
             </div>
         </div>
@@ -135,7 +153,7 @@
             @forelse(($posts ?? collect()) as $post)
                 <a href="{{ route('news.show', $post->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="aspect-[16/10] overflow-hidden bg-white/5">
-                        <img src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                        <img loading="lazy" src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                     </div>
                     <div class="p-5">
                         <h3 class="text-lg font-semibold">{{ $post->title }}</h3>
