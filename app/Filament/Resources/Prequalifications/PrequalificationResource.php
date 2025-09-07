@@ -11,6 +11,7 @@ use App\Filament\Resources\Prequalifications\Schemas\PrequalificationInfolist;
 use App\Filament\Resources\Prequalifications\Tables\PrequalificationsTable;
 use App\Models\Prequalification;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,10 @@ class PrequalificationResource extends Resource
 {
     protected static ?string $model = Prequalification::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Operations';
+    protected static ?int $navigationSort = 20;
 
     protected static ?string $recordTitleAttribute = 'company_name';
 

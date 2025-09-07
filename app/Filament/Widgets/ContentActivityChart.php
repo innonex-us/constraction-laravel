@@ -10,7 +10,16 @@ class ContentActivityChart extends LineChartWidget
 {
     protected ?string $heading = 'Activity (12 months)';
 
-    protected ?string $maxHeight = '280px';
+    protected ?string $maxHeight = '300px';
+
+    protected static ?int $sort = -1;
+
+    protected int|string|array $columnSpan = [
+        'md' => 12,
+        'xl' => 8,
+    ];
+
+    protected ?string $placeholderHeight = '300px';
 
     protected ?string $pollingInterval = '60s';
 

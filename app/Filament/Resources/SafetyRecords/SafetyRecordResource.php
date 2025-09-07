@@ -11,6 +11,7 @@ use App\Filament\Resources\SafetyRecords\Schemas\SafetyRecordInfolist;
 use App\Filament\Resources\SafetyRecords\Tables\SafetyRecordsTable;
 use App\Models\SafetyRecord;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,10 @@ class SafetyRecordResource extends Resource
 {
     protected static ?string $model = SafetyRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Operations';
+    protected static ?int $navigationSort = 50;
 
     protected static ?string $recordTitleAttribute = 'year';
 

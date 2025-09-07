@@ -11,6 +11,15 @@ class TradesBreakdown extends DoughnutChartWidget
 
     protected ?string $maxHeight = '260px';
 
+    protected static ?int $sort = 0;
+
+    protected int|string|array $columnSpan = [
+        'md' => 12,
+        'xl' => 4,
+    ];
+
+    protected ?string $placeholderHeight = '260px';
+
     protected function getData(): array
     {
         $rows = Prequalification::query()
@@ -41,4 +50,3 @@ class TradesBreakdown extends DoughnutChartWidget
         ];
     }
 }
-

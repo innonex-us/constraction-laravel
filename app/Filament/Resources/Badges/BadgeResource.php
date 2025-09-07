@@ -11,6 +11,7 @@ use App\Filament\Resources\Badges\Schemas\BadgeInfolist;
 use App\Filament\Resources\Badges\Tables\BadgesTable;
 use App\Models\Badge;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,10 @@ class BadgeResource extends Resource
 {
     protected static ?string $model = Badge::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Content';
+    protected static ?int $navigationSort = 50;
 
     protected static ?string $recordTitleAttribute = 'name';
 

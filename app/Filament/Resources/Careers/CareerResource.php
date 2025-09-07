@@ -11,6 +11,7 @@ use App\Filament\Resources\Careers\Schemas\CareerInfolist;
 use App\Filament\Resources\Careers\Tables\CareersTable;
 use App\Models\Career;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,10 @@ class CareerResource extends Resource
 {
     protected static ?string $model = Career::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Operations';
+    protected static ?int $navigationSort = 40;
 
     protected static ?string $recordTitleAttribute = 'title';
 

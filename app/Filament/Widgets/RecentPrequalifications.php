@@ -9,9 +9,16 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentPrequalifications extends BaseWidget
 {
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 21;
 
     protected static ?string $heading = 'Recent Prequalifications';
+
+    protected int|string|array $columnSpan = [
+        'md' => 12,
+        'xl' => 6,
+    ];
+
+    protected ?string $placeholderHeight = '360px';
 
     public function table(Table $table): Table
     {
@@ -26,4 +33,3 @@ class RecentPrequalifications extends BaseWidget
             ]);
     }
 }
-

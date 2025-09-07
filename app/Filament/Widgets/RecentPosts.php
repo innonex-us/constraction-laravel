@@ -10,9 +10,16 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentPosts extends BaseWidget
 {
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 11;
 
     protected static ?string $heading = 'Recent Posts';
+
+    protected int|string|array $columnSpan = [
+        'md' => 12,
+        'xl' => 4,
+    ];
+
+    protected ?string $placeholderHeight = '360px';
 
     public function table(Table $table): Table
     {
@@ -27,4 +34,3 @@ class RecentPosts extends BaseWidget
             ]);
     }
 }
-

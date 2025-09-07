@@ -9,9 +9,16 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentMessages extends BaseWidget
 {
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 10;
 
-    protected static ?string $heading = 'Recent Contact Messages';
+    protected static ?string $heading = 'Inbox';
+
+    protected int|string|array $columnSpan = [
+        'md' => 12,
+        'xl' => 8,
+    ];
+
+    protected ?string $placeholderHeight = '360px';
 
     public function table(Table $table): Table
     {

@@ -10,8 +10,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
+// Removed default Account and Filament info widgets from dashboard
 use Filament\Support\Enums\Width;
 use App\Filament\Widgets\DashboardStats;
 use App\Filament\Widgets\RecentMessages;
@@ -44,7 +43,13 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => ($p = optional(SiteSetting::first())->logo_path) ? asset($p) : null)
             ->maxContentWidth(Width::Full)
             ->sidebarCollapsibleOnDesktop(true)
-            ->sidebarFullyCollapsibleOnDesktop(true);
+            ->sidebarFullyCollapsibleOnDesktop(true)
+            ->navigationGroups([
+                'Content',
+                'Portfolio',
+                'Operations',
+                'Settings',
+            ]);
 
         // Use Vite theme only when dev server is running or a build exists.
         $themeEntry = 'resources/css/filament/admin/theme.css';
@@ -69,8 +74,6 @@ class AdminPanelProvider extends PanelProvider
                 RecentPosts::class,
                 RecentProjects::class,
                 RecentPrequalifications::class,
-                AccountWidget::class,
-                FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

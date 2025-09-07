@@ -11,6 +11,7 @@ use App\Filament\Resources\GalleryItems\Schemas\GalleryItemInfolist;
 use App\Filament\Resources\GalleryItems\Tables\GalleryItemsTable;
 use App\Models\GalleryItem;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,11 @@ class GalleryItemResource extends Resource
 {
     protected static ?string $model = GalleryItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Content';
+    protected static ?string $navigationLabel = 'Gallery';
+    protected static ?int $navigationSort = 30;
 
     protected static ?string $recordTitleAttribute = 'title';
 

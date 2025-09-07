@@ -9,8 +9,14 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class DashboardStats extends BaseWidget
 {
+    protected static ?int $sort = -10;
+
     // Match parent trait (non-static) for polling interval
     protected ?string $pollingInterval = '30s';
+
+    protected int|string|array $columnSpan = 'full';
+
+    protected ?string $heading = 'Overview';
 
     protected function getStats(): array
     {
