@@ -2,10 +2,15 @@
 
 namespace App\Filament\Resources\SiteSettings\Schemas;
 
+use Filament\Forms\Components\ColorPicker;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Set;
 
 class SiteSettingForm
 {
@@ -27,8 +32,39 @@ class SiteSettingForm
                     ->imageResizeTargetHeight('200')
                     ->previewable(true)
                     ->imagePreviewHeight('120'),
-                TextInput::make('primary_color'),
-                TextInput::make('secondary_color'),
+                Fieldset::make('Brand Colors')->schema([
+                    Grid::make(12)->schema([
+                        Select::make('primary_color_preset')
+                            ->label('Primary Color (Preset)')
+                            ->options(self::palette())
+                            ->native(false)
+                            ->dehydrated(false)
+                            ->live()
+                            ->afterStateUpdated(function (Set $set, ?string $state) {
+                                if ($state) $set('primary_color', $state, shouldCallUpdatedHooks: true);
+                            })
+                            ->columnSpan(6),
+                        ColorPicker::make('primary_color')
+                            ->label('Primary Color')
+                            ->hex()
+                            ->columnSpan(6),
+
+                        Select::make('secondary_color_preset')
+                            ->label('Secondary Color (Preset)')
+                            ->options(self::palette())
+                            ->native(false)
+                            ->dehydrated(false)
+                            ->live()
+                            ->afterStateUpdated(function (Set $set, ?string $state) {
+                                if ($state) $set('secondary_color', $state, shouldCallUpdatedHooks: true);
+                            })
+                            ->columnSpan(6),
+                        ColorPicker::make('secondary_color')
+                            ->label('Secondary Color')
+                            ->hex()
+                            ->columnSpan(6),
+                    ])->columns(12),
+                ]),
                 Textarea::make('address')
                     ->columnSpanFull(),
                 TextInput::make('phone')
@@ -44,5 +80,21 @@ class SiteSettingForm
                     ->required()
                     ->default('default'),
             ]);
+    }
+
+    protected static function palette(): array
+    {
+        return [
+            '#10B981' => 'Emerald',
+            '#14B8A6' => 'Teal',
+            '#0EA5E9' => 'Sky',
+            '#3B82F6' => 'Blue',
+            '#6366F1' => 'Indigo',
+            '#8B5CF6' => 'Violet',
+            '#D946EF' => 'Fuchsia',
+            '#F43F5E' => 'Rose',
+            '#F59E0B' => 'Amber',
+            '#22C55E' => 'Green',
+        ];
     }
 }
