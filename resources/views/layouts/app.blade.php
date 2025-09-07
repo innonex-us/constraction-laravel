@@ -39,9 +39,10 @@
         <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
                 @if(!empty($settings?->logo_path))
-                    <img src="{{ asset($settings->logo_path) }}" alt="Logo" class="h-8 w-auto" />
+                    <img src="{{ asset('storage/' . ltrim($settings->logo_path, '/')) }}" alt="{{ $settings->site_name ?? 'Logo' }}" class="site-logo" />
+                @else
+                    <span class="font-semibold tracking-wide">{{ $settings->site_name ?? 'Construction Co.' }}</span>
                 @endif
-                <span class="font-semibold tracking-wide">{{ $settings->site_name ?? 'Construction Co.' }}</span>
             </a>
             <nav class="hidden md:flex items-center gap-6 text-sm">
                 <a href="/services" class="hover:text-emerald-300 transition">Services</a>
@@ -83,9 +84,10 @@
             <div>
                 <div class="flex items-center gap-2">
                     @if(!empty($settings?->logo_path))
-                        <img src="{{ asset($settings->logo_path) }}" alt="Logo" class="h-8 w-auto" />
+                        <img src="{{ asset('storage/' . ltrim($settings->logo_path, '/')) }}" alt="{{ $settings->site_name ?? 'Logo' }}" class="site-logo--footer" />
+                    @else
+                        <div class="text-xl font-semibold">{{ $settings->site_name ?? 'Construction Co.' }}</div>
                     @endif
-                    <div class="text-xl font-semibold">{{ $settings->site_name ?? 'Construction Co.' }}</div>
                 </div>
                 @if(!empty($settings?->headline))
                     <p class="text-slate-400 mt-3">{{ $settings->headline }}</p>

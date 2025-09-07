@@ -11,6 +11,10 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+/* Consistent sizing for brand logos */
+.site-logo { height: 36px; width: auto; display: block }
+.site-logo--footer { height: 40px; width: auto; display: block }
+
 /* Homepage micro-animations */
 @keyframes marquee {
     0% { transform: translateX(0) }

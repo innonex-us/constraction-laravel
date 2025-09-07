@@ -24,10 +24,15 @@ class BadgeForm
                         ->image()
                         ->directory('badges')
                         ->disk('public')
+                        ->imageEditor()
+                        ->imageEditorMode(2)
+                        ->imageEditorAspectRatios([null, '1:1', '4:3', '16:9'])
+                        ->imageResizeMode('contain')
+                        ->imageResizeTargetWidth('800')
+                        ->imageResizeTargetHeight('600')
                         ->required()
                         ->columnSpan(6),
                 ]),
             ]);
     }
 }
-

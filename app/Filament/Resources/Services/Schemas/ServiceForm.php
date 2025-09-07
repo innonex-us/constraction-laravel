@@ -28,6 +28,12 @@ class ServiceForm
                     ->disk('public')
                     ->directory('services')
                     ->imageEditor()
+                    ->imageEditorMode(2)
+                    ->imageEditorAspectRatios([null, '16:9', '4:3', '1:1'])
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('16:9')
+                    ->imageResizeTargetWidth('1600')
+                    ->imageResizeTargetHeight('900')
                     ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 TextInput::make('order')
                     ->required()

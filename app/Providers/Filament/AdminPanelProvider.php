@@ -40,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Emerald,
             ])
             ->brandName(fn () => optional(SiteSetting::first())->site_name ?? config('app.name'))
-            ->brandLogo(fn () => ($p = optional(SiteSetting::first())->logo_path) ? asset($p) : null)
+            ->brandLogo(fn () => ($p = optional(SiteSetting::first())->logo_path) ? asset('storage/' . ltrim($p, '/')) : null)
             ->maxContentWidth(Width::Full)
             ->sidebarCollapsibleOnDesktop(true)
             ->sidebarFullyCollapsibleOnDesktop(true)

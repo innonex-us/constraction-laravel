@@ -20,9 +20,17 @@ class TeamMemberForm
                     ->columnSpanFull(),
                 FileUpload::make('photo')
                     ->image()
+                    ->avatar()
                     ->disk('public')
                     ->directory('team')
                     ->imageEditor()
+                    ->circleCropper()
+                    ->imageEditorMode(2)
+                    ->imageEditorAspectRatios(['1:1'])
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('1:1')
+                    ->imageResizeTargetWidth('600')
+                    ->imageResizeTargetHeight('600')
                     ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 TextInput::make('linkedin_url'),
                 TextInput::make('order')

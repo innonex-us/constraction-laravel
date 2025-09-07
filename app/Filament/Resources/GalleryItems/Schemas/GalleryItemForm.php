@@ -25,6 +25,12 @@ class GalleryItemForm
                         ->directory('gallery')
                         ->disk('public')
                         ->imageEditor()
+                        ->imageEditorMode(2)
+                        ->imageEditorAspectRatios([null, '4:3', '16:9', '1:1'])
+                        ->imageResizeMode('cover')
+                        ->imageCropAspectRatio('4:3')
+                        ->imageResizeTargetWidth('1600')
+                        ->imageResizeTargetHeight('1200')
                         ->required()
                         ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); })
                         ->columnSpan(6),

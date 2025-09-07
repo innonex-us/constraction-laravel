@@ -34,6 +34,12 @@ class ProjectForm
                     ->disk('public')
                     ->directory('projects')
                     ->imageEditor()
+                    ->imageEditorMode(2)
+                    ->imageEditorAspectRatios([null, '16:9', '4:3', '1:1'])
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('16:9')
+                    ->imageResizeTargetWidth('1920')
+                    ->imageResizeTargetHeight('1080')
                     ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 Textarea::make('gallery')
                     ->columnSpanFull(),

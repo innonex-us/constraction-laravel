@@ -8,6 +8,39 @@ use Intervention\Image\ImageManager;
 class ImageHelper
 {
     /**
+     * Normalize an original image to avoid storing excessively large files.
+     * Scales down if image exceeds max width/height and re-encodes in its
+     * original format (JPEG quality ~85, WEBP ~80, PNG default compression).
+     */
+    public static function normalizeOriginal(string $relativePath, int $maxW = 2400, int $maxH = 2400): void
+    {
+        $relativePath = ltrim($relativePath, '/');
+        if (! Storage::disk('public')->exists($relativePath)) return;
+
+        try {
+            $ext = strtolower(pathinfo($relativePath, PATHINFO_EXTENSION));
+            $raw = Storage::disk('public')->get($relativePath);
+            $manager = new ImageManager(['driver' => 'gd']);
+            $image = $manager->read($raw);
+
+            $w = $image->width();
+            $h = $image->height();
+            if ($w > $maxW || $h > $maxH) {
+                $image = $image->scaleDown(width: $maxW, height: $maxH);
+            }
+
+            $encoded = match ($ext) {
+                'jpg', 'jpeg' => $image->toJpeg(85),
+                'webp' => $image->toWebp(80),
+                default => $image->toPng(),
+            };
+
+            Storage::disk('public')->put($relativePath, (string) $encoded);
+        } catch (\Throwable $e) {
+            // Ignore normalization errors to avoid breaking uploads
+        }
+    }
+    /**
      * Generate responsive variants for a public disk image.
      * Creates width-based copies: 400, 800, 1200 (no upscale), suffix `_w{w}`.
      */
@@ -17,6 +50,9 @@ class ImageHelper
         if (! Storage::disk('public')->exists($relativePath)) {
             return;
         }
+
+        // First, normalize the original to a reasonable size.
+        static::normalizeOriginal($relativePath);
 
         $ext = strtolower(pathinfo($relativePath, PATHINFO_EXTENSION));
         $name = pathinfo($relativePath, PATHINFO_FILENAME);
