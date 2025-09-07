@@ -17,6 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <!-- Turbo Drive for smooth navigation without full page reloads -->
+    <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.6/dist/turbo.es2017-umd.min.js" defer></script>
     <style>
         :root{
             --brand: {{ $settings->primary_color ?? '#10b981' }};
@@ -32,7 +34,7 @@
     <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module" defer></script>
 </head>
 <body class="min-h-dvh bg-slate-950 text-slate-100 gradient">
-<header class="fixed top-0 left-0 right-0 z-50">
+<header id="site-header" data-turbo-permanent class="fixed top-0 left-0 right-0 z-50">
     <div class="glass border-b border-white/5">
         <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
@@ -48,7 +50,7 @@
                 <a href="/news" class="hover:text-emerald-300 transition">News</a>
                 <a href="/page/about" class="hover:text-emerald-300 transition">About</a>
                 <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
-                <a href="/admin" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
+                <a href="/admin" data-turbo="false" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
             </nav>
             <button id="menu-btn" class="md:hidden inline-flex items-center justify-center rounded-md border border-white/10 px-3 py-2" aria-expanded="false" aria-controls="mobile-nav">
                 <span class="sr-only">Open menu</span>
@@ -64,7 +66,7 @@
             <a href="/news" class="hover:text-emerald-300 transition">News</a>
             <a href="/page/about" class="hover:text-emerald-300 transition">About</a>
             <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
-            <a href="/admin" class="px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-max">Admin</a>
+            <a href="/admin" data-turbo="false" class="px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-max">Admin</a>
         </div>
     </div>
 </header>
@@ -133,7 +135,7 @@
                 <ul class="mt-3 space-y-2 text-slate-300">
                     <li><a class="hover:text-emerald-300" href="{{ route('projects.map') }}">Projects Map</a></li>
                     <li><a class="hover:text-emerald-300" href="{{ route('partners.prequal') }}">Trade Partner Prequal</a></li>
-                    <li><a class="hover:text-emerald-300" href="/admin">Admin</a></li>
+                    <li><a class="hover:text-emerald-300" href="/admin" data-turbo="false">Admin</a></li>
                 </ul>
                 @php($links = (array)($settings->social_links ?? []))
                 @if(!empty($links))
@@ -178,33 +180,59 @@
 </footer>
 
 <script>
-    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
-    // Mobile nav toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileNav = document.getElementById('mobile-nav');
-    if (menuBtn && mobileNav) {
-        const open = () => { mobileNav.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); menuBtn.setAttribute('aria-expanded','true'); };
-        const close = () => { mobileNav.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); menuBtn.setAttribute('aria-expanded','false'); };
-        menuBtn.addEventListener('click', () => mobileNav.classList.contains('hidden') ? open() : close());
-        mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
-        window.addEventListener('resize', () => { if (window.innerWidth >= 768) close(); });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    // Init function to run on first load and Turbo visits
+    function initSiteEnhancements() {
+        // AOS setup (init once, refresh on subsequent loads)
+        if (window.AOS) {
+            if (!window.__aosInitialized) {
+                window.AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+                window.__aosInitialized = true;
+            } else {
+                // Refresh animations when DOM changes
+                try { window.AOS.refreshHard(); } catch (e) { /* noop */ }
+            }
+        }
+
+        // Mobile nav toggle (bind once)
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileNav = document.getElementById('mobile-nav');
+        if (menuBtn && mobileNav && !menuBtn.dataset.bound) {
+            const open = () => { mobileNav.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); menuBtn.setAttribute('aria-expanded','true'); };
+            const close = () => { mobileNav.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); menuBtn.setAttribute('aria-expanded','false'); };
+            menuBtn.addEventListener('click', () => mobileNav.classList.contains('hidden') ? open() : close());
+            mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+            window.addEventListener('resize', () => { if (window.innerWidth >= 768) close(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+            menuBtn.dataset.bound = '1';
+        }
+
+        // Lightweight lazy loader: for images with data-src / data-srcset
+        const candidates = Array.from(document.querySelectorAll('img[data-src], img[data-srcset]'));
+        if ('IntersectionObserver' in window && candidates.length) {
+            if (!window.__lazyIO) {
+                window.__lazyIO = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        const img = entry.target;
+                        if (img.dataset.src) img.src = img.dataset.src;
+                        if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+                        img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+                        window.__lazyIO.unobserve(img);
+                    });
+                }, { rootMargin: '600px' });
+            }
+            candidates.forEach(img => window.__lazyIO.observe(img));
+        }
     }
-    // Lightweight lazy loader: for images with data-src / data-srcset
-    const lazyImgs = Array.from(document.querySelectorAll('img[data-src], img[data-srcset]'));
-    if ('IntersectionObserver' in window && lazyImgs.length) {
-        const io = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const img = entry.target;
-                if (img.dataset.src) img.src = img.dataset.src;
-                if (img.dataset.srcset) img.srcset = img.dataset.srcset;
-                img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
-                io.unobserve(img);
-            });
-        }, { rootMargin: '600px' });
-        lazyImgs.forEach(img => io.observe(img));
+
+    // First load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSiteEnhancements);
+    } else {
+        initSiteEnhancements();
     }
+    // Turbo visits
+    window.addEventListener('turbo:load', initSiteEnhancements);
 </script>
 @stack('scripts')
 

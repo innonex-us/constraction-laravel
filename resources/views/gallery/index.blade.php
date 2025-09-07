@@ -74,8 +74,9 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+function initGalleryLightbox() {
   const lightbox = document.getElementById('lightbox');
+  if (!lightbox || lightbox.dataset.bound) return; // prevent duplicate binding
   const img = document.getElementById('lightbox-img');
   const cap = document.getElementById('lightbox-cap');
   const items = Array.from(document.querySelectorAll('#gallery-grid [data-lightbox-src]'))
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const open = (i) => {
     index = i; const it = items[index];
-    img.src = it.src; cap.textContent = it.caption; 
+    img.src = it.src; cap.textContent = it.caption;
     lightbox.classList.remove('hidden'); lightbox.classList.add('flex');
   };
   const close = () => { lightbox.classList.add('hidden'); lightbox.classList.remove('flex'); };
@@ -97,6 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('[data-lightbox-prev]')?.addEventListener('click', prev);
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
   document.addEventListener('keydown', (e) => { if (lightbox.classList.contains('hidden')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowRight') next(); if (e.key === 'ArrowLeft') prev(); });
-});
+
+  lightbox.dataset.bound = '1';
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initGalleryLightbox);
+} else {
+  initGalleryLightbox();
+}
+window.addEventListener('turbo:load', initGalleryLightbox);
 </script>
 @endpush
