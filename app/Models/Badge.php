@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Support\ImageHelper;
 
 class Badge extends Model
 {
@@ -22,5 +23,19 @@ class Badge extends Model
                 $badge->slug = Str::slug($badge->name);
             }
         });
+
+        static::saved(function (Badge $badge) {
+            if ($badge->image && ! str_starts_with($badge->image, 'http')) {
+                ImageHelper::generateVariants($badge->image);
+            }
+        });
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) return null;
+        return str_starts_with($this->image, 'http')
+            ? $this->image
+            : asset('storage/' . ltrim($this->image, '/'));
     }
 }

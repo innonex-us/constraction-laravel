@@ -13,4 +13,37 @@ class SiteSetting extends Model
     protected $casts = [
         'social_links' => 'array',
     ];
+
+    // Normalize logo path to be relative to the public disk, for Filament previews.
+    public function getLogoPathAttribute($value): ?string
+    {
+        if (empty($value)) return null;
+        $v = (string) $value;
+        // If full URL, keep only the path part
+        if (str_starts_with($v, 'http')) {
+            $path = parse_url($v, PHP_URL_PATH);
+            $v = $path ?: $v;
+        }
+        // Strip leading slash and `storage/` prefix if present
+        $v = ltrim($v, '/');
+        if (str_starts_with($v, 'storage/')) {
+            $v = substr($v, strlen('storage/'));
+        }
+        return $v;
+    }
+
+    public function setLogoPathAttribute($value): void
+    {
+        if (empty($value)) { $this->attributes['logo_path'] = null; return; }
+        $v = (string) $value;
+        if (str_starts_with($v, 'http')) {
+            $path = parse_url($v, PHP_URL_PATH);
+            $v = $path ?: $v;
+        }
+        $v = ltrim($v, '/');
+        if (str_starts_with($v, 'storage/')) {
+            $v = substr($v, strlen('storage/'));
+        }
+        $this->attributes['logo_path'] = $v;
+    }
 }

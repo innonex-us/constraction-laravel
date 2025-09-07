@@ -15,6 +15,9 @@
 .site-logo { height: 36px; width: auto; display: block }
 .site-logo--footer { height: 40px; width: auto; display: block }
 
+/* Fixed sizing for Certifications & Affiliations logos */
+.badge-logo { height: 28px; width: auto; object-fit: contain; display: block }
+
 /* Homepage micro-animations */
 @keyframes marquee {
     0% { transform: translateX(0) }

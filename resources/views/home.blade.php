@@ -56,12 +56,14 @@
         <h3 class="text-xl font-semibold mb-4">Certifications & Affiliations</h3>
         <div class="flex flex-wrap items-center gap-6 opacity-80 hover:opacity-100 transition">
             @foreach($badges as $b)
+                @php($src = $b->image_url)
+                @if(!$src) @continue @endif
                 @if($b->url)
                     <a href="{{ $b->url }}" target="_blank" rel="noopener" class="block">
-                        <img loading="lazy" src="{{ $b->image }}" alt="{{ $b->name }}" class="h-10 w-auto" />
+                        <img loading="lazy" src="{{ $src }}" alt="{{ $b->name }}" class="badge-logo" />
                     </a>
                 @else
-                    <img loading="lazy" src="{{ $b->image }}" alt="{{ $b->name }}" class="h-10 w-auto" />
+                    <img loading="lazy" src="{{ $src }}" alt="{{ $b->name }}" class="badge-logo" />
                 @endif
             @endforeach
         </div>

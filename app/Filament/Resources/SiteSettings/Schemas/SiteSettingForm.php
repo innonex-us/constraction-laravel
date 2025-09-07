@@ -24,7 +24,9 @@ class SiteSettingForm
                     ->imageEditorAspectRatios([null, '1:1', '16:9', '4:1'])
                     ->imageResizeMode('contain')
                     ->imageResizeTargetWidth('500')
-                    ->imageResizeTargetHeight('200'),
+                    ->imageResizeTargetHeight('200')
+                    ->previewable(true)
+                    ->imagePreviewHeight('120'),
                 TextInput::make('primary_color'),
                 TextInput::make('secondary_color'),
                 Textarea::make('address')
