@@ -20,6 +20,8 @@ use App\Filament\Widgets\RecentPosts;
 use App\Filament\Widgets\RecentProjects;
 use App\Filament\Widgets\RecentPrequalifications;
 use App\Models\SiteSetting;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -58,6 +60,20 @@ class AdminPanelProvider extends PanelProvider
         if ($hasViteTheme) {
             $panel->viteTheme('resources/css/filament/admin/theme.css');
         }
+
+        // Inject dynamic brand colors into the admin using render hooks
+        $panel->bootUsing(function () {
+            $settings = SiteSetting::first();
+            $primary = $settings?->primary_color ?: '#10b981';
+            $secondary = $settings?->secondary_color ?: '#0ea5e9';
+
+            FilamentView::registerRenderHook(PanelsRenderHook::STYLES_AFTER, fn () =>
+                view('filament.brand-styles', [
+                    'primary' => $primary,
+                    'secondary' => $secondary,
+                ])->render()
+            );
+        });
 
         return $panel
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

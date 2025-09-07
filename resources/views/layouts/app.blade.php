@@ -30,6 +30,25 @@
         .gradient{ background-image: radial-gradient(1200px 400px at 10% -10%, color-mix(in oklab, var(--brand) 35%, transparent), transparent),
             radial-gradient(900px 300px at 90% -10%, color-mix(in oklab, var(--brand-2) 35%, transparent), transparent);
         }
+        /* Brand overrides to ensure admin-set colors take effect even without a fresh build */
+        :where(.text-emerald-300){ color: var(--brand) !important }
+        :where(.hover\:text-emerald-300:hover){ color: var(--brand) !important }
+        :where(.text-emerald-200){ color: color-mix(in oklab, var(--brand) 85%, white) !important }
+        :where(.hover\:text-emerald-200:hover){ color: color-mix(in oklab, var(--brand) 85%, white) !important }
+        :where(.bg-emerald-500){ background-color: var(--brand) !important }
+        :where(.hover\:bg-emerald-400:hover){ background-color: color-mix(in oklab, var(--brand) 90%, white) !important }
+        :where(.bg-emerald-500\/10){ background-color: color-mix(in oklab, var(--brand) 10%, transparent) !important }
+        :where(.hover\:bg-emerald-500\/20:hover){ background-color: color-mix(in oklab, var(--brand) 20%, transparent) !important }
+        :where(.border-emerald-500\/30){ border-color: color-mix(in oklab, var(--brand) 30%, transparent) !important }
+        :where(.border-emerald-400){ border-color: color-mix(in oklab, var(--brand) 70%, white) !important }
+        :where(.from-emerald-500\/10){
+            --tw-gradient-from: color-mix(in oklab, var(--brand) 10%, transparent) var(--tw-gradient-from-position);
+            --tw-gradient-to: color-mix(in oklab, var(--brand) 0%, transparent) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+        }
+        :where(.to-sky-500\/10){
+            --tw-gradient-to: color-mix(in oklab, var(--brand-2) 10%, transparent) var(--tw-gradient-to-position) !important;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module" defer></script>
 </head>

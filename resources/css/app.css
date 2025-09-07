@@ -18,6 +18,33 @@
 /* Fixed sizing for Certifications & Affiliations logos */
 .badge-logo { height: 28px; width: auto; object-fit: contain; display: block }
 
+/* THEME: Map common emerald/sky Tailwind utilities to admin-defined colors */
+/* Text colors */
+.text-emerald-300 { color: var(--brand) !important }
+.hover\:text-emerald-300:hover { color: var(--brand) !important }
+.text-emerald-200 { color: color-mix(in oklab, var(--brand) 85%, white) !important }
+.hover\:text-emerald-200:hover { color: color-mix(in oklab, var(--brand) 85%, white) !important }
+
+/* Backgrounds */
+.bg-emerald-500 { background-color: var(--brand) !important }
+.hover\:bg-emerald-400:hover { background-color: color-mix(in oklab, var(--brand) 90%, white) !important }
+.bg-emerald-500\/10 { background-color: color-mix(in oklab, var(--brand) 10%, transparent) !important }
+.hover\:bg-emerald-500\/20:hover { background-color: color-mix(in oklab, var(--brand) 20%, transparent) !important }
+
+/* Borders */
+.border-emerald-500\/30 { border-color: color-mix(in oklab, var(--brand) 30%, transparent) !important }
+.border-emerald-400 { border-color: color-mix(in oklab, var(--brand) 70%, white) !important }
+
+/* Gradients */
+.from-emerald-500\/10 {
+  --tw-gradient-from: color-mix(in oklab, var(--brand) 10%, transparent) var(--tw-gradient-from-position);
+  --tw-gradient-to: color-mix(in oklab, var(--brand) 0%, transparent) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.to-sky-500\/10 {
+  --tw-gradient-to: color-mix(in oklab, var(--brand-2) 10%, transparent) var(--tw-gradient-to-position) !important;
+}
+
 /* Homepage micro-animations */
 @keyframes marquee {
     0% { transform: translateX(0) }
