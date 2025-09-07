@@ -20,7 +20,7 @@ class ImageHelper
         try {
             $ext = strtolower(pathinfo($relativePath, PATHINFO_EXTENSION));
             $raw = Storage::disk('public')->get($relativePath);
-            $manager = new ImageManager(['driver' => 'gd']);
+            $manager = ImageManager::gd();
             $image = $manager->read($raw);
 
             $w = $image->width();
@@ -59,7 +59,7 @@ class ImageHelper
         $dir = trim(pathinfo($relativePath, PATHINFO_DIRNAME), '.');
         $dir = $dir === '' ? '' : ($dir . '/');
 
-        $manager = new ImageManager(['driver' => 'gd']);
+        $manager = ImageManager::gd();
         $raw = Storage::disk('public')->get($relativePath);
         $image = $manager->read($raw);
         $origW = $image->width();

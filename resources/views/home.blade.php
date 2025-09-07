@@ -118,9 +118,17 @@
         <h2 class="text-2xl md:text-3xl font-bold mb-8">What clients say</h2>
         <div class="grid md:grid-cols-3 gap-6">
             @forelse($testimonials as $t)
-                <div class="p-6 rounded-2xl bg-white/5 border border-white/10" data-aos="zoom-in">
-                    <p class="text-slate-300">“{{ $t->content }}”</p>
-                    <div class="mt-4 text-sm text-slate-400">— {{ $t->author_name }} @if($t->company) • {{ $t->company }} @endif</div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-4" data-aos="zoom-in">
+                    <p class="text-slate-300 flex-1">“{{ $t->content }}”</p>
+                    <div class="flex items-center gap-3">
+                        @if($t->avatar_image_url)
+                            <img src="{{ $t->avatar_image_url }}" alt="{{ $t->author_name }}" class="h-10 w-10 rounded-full object-cover" loading="lazy" decoding="async" />
+                        @endif
+                        <div class="text-sm text-slate-300">
+                            <div class="font-medium">{{ $t->author_name }}</div>
+                            <div class="text-slate-400">@if($t->author_title){{ $t->author_title }}@endif @if($t->company) • {{ $t->company }}@endif</div>
+                        </div>
+                    </div>
                 </div>
             @empty
                 <p class="text-slate-400">No testimonials yet.</p>

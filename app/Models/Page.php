@@ -9,11 +9,12 @@ use App\Support\ImageHelper;
 class Page extends Model
 {
     protected $fillable = [
-        'title','slug','content','hero_image','meta_title','meta_description','is_published',
+        'title','slug','content','hero_image','meta_title','meta_description','is_published','show_in_nav','nav_order',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
+        'show_in_nav' => 'boolean',
     ];
 
     protected static function booted(): void

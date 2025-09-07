@@ -35,8 +35,9 @@ class PageForm
                 TextInput::make('meta_title'),
                 Textarea::make('meta_description')
                     ->columnSpanFull(),
-                Toggle::make('is_published')
-                    ->required(),
+                Toggle::make('is_published')->required(),
+                Toggle::make('show_in_nav')->label('Show in Navbar'),
+                TextInput::make('nav_order')->numeric()->default(0),
             ]);
     }
 }

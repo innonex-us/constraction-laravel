@@ -24,8 +24,9 @@ class PagesTable
                 ImageColumn::make('hero_image'),
                 TextColumn::make('meta_title')
                     ->searchable(),
-                IconColumn::make('is_published')
-                    ->boolean(),
+                IconColumn::make('is_published')->boolean(),
+                IconColumn::make('show_in_nav')->boolean(),
+                TextColumn::make('nav_order')->numeric()->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
