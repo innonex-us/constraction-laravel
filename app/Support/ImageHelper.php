@@ -30,14 +30,33 @@ class ImageHelper
 
         foreach ([400, 800, 1200] as $w) {
             if ($origW <= $w) continue; // don't upscale
-            $variantPath = $dir . $name . '_w' . $w . '.' . $ext;
-            if (Storage::disk('public')->exists($variantPath)) continue;
+            $jpegPath = $dir . $name . '_w' . $w . '.jpg';
+            $webpPath = $dir . $name . '_w' . $w . '.webp';
+
+            // If both variants already exist, skip expensive work
+            if (Storage::disk('public')->exists($jpegPath) && Storage::disk('public')->exists($webpPath)) continue;
 
             $resized = $image->scaleDown(width: $w);
-            $encoded = $resized->toJpeg(80);
-            // If original isn't jpeg, still save jpeg variant to reduce size
-            $variantPath = $dir . $name . '_w' . $w . '.jpg';
-            Storage::disk('public')->put($variantPath, (string) $encoded);
+
+            // JPEG fallback (slightly higher quality for clarity)
+            if (! Storage::disk('public')->exists($jpegPath)) {
+                try {
+                    $jpeg = $resized->toJpeg(85);
+                    Storage::disk('public')->put($jpegPath, (string) $jpeg);
+                } catch (\Throwable $e) {
+                    // ignore
+                }
+            }
+
+            // WEBP modern format (if supported by server)
+            if (! Storage::disk('public')->exists($webpPath)) {
+                try {
+                    $webp = $resized->toWebp(80);
+                    Storage::disk('public')->put($webpPath, (string) $webp);
+                } catch (\Throwable $e) {
+                    // ignore if WEBP not supported
+                }
+            }
         }
     }
 
@@ -47,7 +66,7 @@ class ImageHelper
      *
      * @return array<int,string>
      */
-    public static function variantsFor(string $relativePath): array
+    public static function variantsFor(string $relativePath, string $format = 'jpg'): array
     {
         $relativePath = ltrim($relativePath, '/');
         if (! Storage::disk('public')->exists($relativePath)) {
@@ -61,7 +80,8 @@ class ImageHelper
 
         $variants = [];
         foreach ([400, 800, 1200] as $w) {
-            $candidate = $dir . $name . '_w' . $w . '.jpg';
+            $ext = $format === 'webp' ? 'webp' : 'jpg';
+            $candidate = $dir . $name . '_w' . $w . '.' . $ext;
             if (Storage::disk('public')->exists($candidate)) {
                 $variants[$w] = $candidate;
             }
@@ -70,7 +90,8 @@ class ImageHelper
         if (empty($variants)) {
             static::generateVariants($relativePath);
             foreach ([400, 800, 1200] as $w) {
-                $candidate = $dir . $name . '_w' . $w . '.jpg';
+                $ext = $format === 'webp' ? 'webp' : 'jpg';
+                $candidate = $dir . $name . '_w' . $w . '.' . $ext;
                 if (Storage::disk('public')->exists($candidate)) {
                     $variants[$w] = $candidate;
                 }
@@ -81,4 +102,3 @@ class ImageHelper
         return $variants;
     }
 }
-

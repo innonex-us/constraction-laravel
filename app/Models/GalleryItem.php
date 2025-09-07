@@ -46,7 +46,7 @@ class GalleryItem extends Model
             return null;
         }
 
-        $variants = ImageHelper::variantsFor($this->image);
+        $variants = ImageHelper::variantsFor($this->image, 'jpg');
         if (empty($variants)) return null;
 
         $parts = [];
@@ -54,5 +54,38 @@ class GalleryItem extends Model
             $parts[] = asset('storage/' . $path) . ' ' . $w . 'w';
         }
         return implode(', ', $parts);
+    }
+
+    public function getImageSrcsetWebpAttribute(): ?string
+    {
+        if (! $this->image || str_starts_with($this->image, 'http')) {
+            return null;
+        }
+
+        $variants = ImageHelper::variantsFor($this->image, 'webp');
+        if (empty($variants)) return null;
+
+        $parts = [];
+        foreach ($variants as $w => $path) {
+            $parts[] = asset('storage/' . $path) . ' ' . $w . 'w';
+        }
+        return implode(', ', $parts);
+    }
+
+    public function getImageFallbackUrlAttribute(): string
+    {
+        // Prefer the largest generated JPEG variant as a broadly compatible fallback.
+        if (! $this->image || str_starts_with($this->image, 'http')) {
+            return (string) $this->image_url;
+        }
+
+        $variants = ImageHelper::variantsFor($this->image, 'jpg');
+        if (! empty($variants)) {
+            // Variants are keyed by width and sorted ascending; pick the largest available.
+            $last = end($variants);
+            if ($last) return asset('storage/' . $last);
+        }
+
+        return (string) $this->image_url;
     }
 }

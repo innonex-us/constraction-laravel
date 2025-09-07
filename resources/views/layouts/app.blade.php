@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module" defer></script>
 </head>
 <body class="min-h-dvh bg-slate-950 text-slate-100 gradient">
-<header class="sticky top-0 z-50">
+<header class="fixed top-0 left-0 right-0 z-50">
     <div class="glass border-b border-white/5">
         <div class="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2">
@@ -69,7 +69,7 @@
     </div>
 </header>
 
-<main>
+<main class="pt-16">
     {{ $slot ?? '' }}
     @yield('content')
 </main>
@@ -202,7 +202,7 @@
                 img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
                 io.unobserve(img);
             });
-        }, { rootMargin: '200px' });
+        }, { rootMargin: '600px' });
         lazyImgs.forEach(img => io.observe(img));
     }
 </script>
