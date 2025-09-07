@@ -45,12 +45,36 @@ class Project extends Model
     public function getFeaturedImageSrcsetAttribute(): ?string
     {
         if (! $this->featured_image || str_starts_with($this->featured_image, 'http')) return null;
-        $variants = ImageHelper::variantsFor($this->featured_image);
+        $variants = ImageHelper::variantsFor($this->featured_image, 'jpg');
         if (empty($variants)) return null;
         $parts = [];
         foreach ($variants as $w => $path) {
             $parts[] = asset('storage/' . $path) . ' ' . $w . 'w';
         }
         return implode(', ', $parts);
+    }
+
+    public function getFeaturedImageSrcsetWebpAttribute(): ?string
+    {
+        if (! $this->featured_image || str_starts_with($this->featured_image, 'http')) return null;
+        $variants = ImageHelper::variantsFor($this->featured_image, 'webp');
+        if (empty($variants)) return null;
+        $parts = [];
+        foreach ($variants as $w => $path) {
+            $parts[] = asset('storage/' . $path) . ' ' . $w . 'w';
+        }
+        return implode(', ', $parts);
+    }
+
+    public function getFeaturedImageFallbackUrlAttribute(): ?string
+    {
+        if (! $this->featured_image) return null;
+        if (str_starts_with($this->featured_image, 'http')) return $this->featured_image_url;
+        $variants = ImageHelper::variantsFor($this->featured_image, 'jpg');
+        if (! empty($variants)) {
+            $last = end($variants);
+            if ($last) return asset('storage/' . $last);
+        }
+        return $this->featured_image_url;
     }
 }

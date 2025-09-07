@@ -167,16 +167,28 @@ Artisan::command('import:aac {base} {--max=40}', function (string $base) {
 })->purpose('Import pages/services/projects from the AAC WordPress site');
 
 Artisan::command('images:variants', function () {
-    $this->info('Generating responsive variants for gallery images...');
+    $this->info('Generating responsive variants for images...');
     $count = 0;
-    foreach (GalleryItem::whereNotNull('image')->cursor() as $item) {
-        if ($item->image && ! str_starts_with($item->image, 'http')) {
-            ImageHelper::generateVariants($item->image);
-            $count++;
+    $map = [
+        [App\Models\GalleryItem::class, 'image'],
+        [App\Models\Service::class, 'image'],
+        [App\Models\Project::class, 'featured_image'],
+        [App\Models\Post::class, 'featured_image'],
+        [App\Models\Page::class, 'hero_image'],
+        [App\Models\TeamMember::class, 'photo'],
+        [App\Models\Badge::class, 'image'],
+    ];
+    foreach ($map as [$cls, $col]) {
+        foreach ($cls::whereNotNull($col)->cursor() as $record) {
+            $path = (string) $record->{$col};
+            if ($path && ! str_starts_with($path, 'http')) {
+                ImageHelper::generateVariants($path);
+                $count++;
+            }
         }
     }
     $this->info("Done. Processed {$count} images.");
-})->purpose('Generate responsive variants for gallery images');
+})->purpose('Generate responsive variants for content images');
 
 Artisan::command('images:mirror-remote', function () {
     $client = new GuzzleHttp\Client(['timeout' => 30, 'connect_timeout' => 10, 'http_errors' => false]);

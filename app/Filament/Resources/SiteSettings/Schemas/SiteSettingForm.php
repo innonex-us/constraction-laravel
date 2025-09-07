@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SiteSettings\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
 
 class SiteSettingForm
@@ -13,7 +14,12 @@ class SiteSettingForm
         return $schema
             ->components([
                 TextInput::make('site_name'),
-                TextInput::make('logo_path'),
+                FileUpload::make('logo_path')
+                    ->label('Logo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('site')
+                    ->imageEditor(),
                 TextInput::make('primary_color'),
                 TextInput::make('secondary_color'),
                 Textarea::make('address')

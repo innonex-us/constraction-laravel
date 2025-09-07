@@ -24,7 +24,11 @@ class ServiceForm
                     ->columnSpanFull(),
                 TextInput::make('icon'),
                 FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('services')
+                    ->imageEditor()
+                    ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 TextInput::make('order')
                     ->required()
                     ->numeric()

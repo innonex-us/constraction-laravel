@@ -30,7 +30,11 @@ class ProjectForm
                     ->default('completed'),
                 TextInput::make('category'),
                 FileUpload::make('featured_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('projects')
+                    ->imageEditor()
+                    ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 Textarea::make('gallery')
                     ->columnSpanFull(),
                 DatePicker::make('started_at'),

@@ -10,7 +10,7 @@
     @endif
     @if($post->featured_image_url)
         <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $post->featured_image_url }}" @if($post->featured_image_srcset) data-srcset="{{ $post->featured_image_srcset }}" sizes="(min-width:1024px) 60vw, 100vw" @endif class="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $post->featured_image_fallback_url ?? $post->featured_image_url }}" @php($wsrc = $post->featured_image_srcset_webp ?? $post->featured_image_srcset) @if($wsrc) data-srcset="{{ $wsrc }}" sizes="(min-width:1024px) 60vw, 100vw" @endif class="w-full h-full object-cover" />
         </div>
     @endif
     <article class="prose prose-invert mt-6">

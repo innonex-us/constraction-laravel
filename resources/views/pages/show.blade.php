@@ -36,7 +36,7 @@
                 <div class="relative">
                     <div class="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                         @if($page->hero_image_url)
-                            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $page->hero_image_url }}" @if($page->hero_image_srcset) data-srcset="{{ $page->hero_image_srcset }}" sizes="(min-width:1024px) 50vw, 100vw" @endif class="w-full h-full object-cover" />
+                            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $page->hero_image_fallback_url ?? $page->hero_image_url }}" @php($wsrc = $page->hero_image_srcset_webp ?? $page->hero_image_srcset) @if($wsrc) data-srcset="{{ $wsrc }}" sizes="(min-width:1024px) 50vw, 100vw" @endif class="w-full h-full object-cover" />
                         @else
                             <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover" />
                         @endif
@@ -78,9 +78,9 @@
     {{-- Default page layout --}}
     <section class="mx-auto max-w-4xl px-4 py-12">
         <h1 class="text-3xl md:text-4xl font-bold">{{ $page->title }}</h1>
-        @if($page->hero_image)
+        @if($page->hero_image_url)
             <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-                <img src="{{ $page->hero_image }}" class="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $page->hero_image_fallback_url ?? $page->hero_image_url }}" @php($wsrc2 = $page->hero_image_srcset_webp ?? $page->hero_image_srcset) @if($wsrc2) data-srcset="{{ $wsrc2 }}" sizes="(min-width:1024px) 60vw, 100vw" @endif class="w-full h-full object-cover" />
             </div>
         @endif
         <article class="prose prose-invert mt-6">
@@ -95,8 +95,8 @@
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($team as $member)
                 <div class="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                    @if($member->photo)
-                        <img src="{{ $member->photo }}" alt="{{ $member->name }}" class="w-full h-52 object-cover" />
+                    @if($member->photo_url)
+                        <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $member->photo_fallback_url ?? $member->photo_url }}" @php($pm = $member->photo_srcset_webp ?? $member->photo_srcset) @if($pm) data-srcset="{{ $pm }}" sizes="(min-width:1024px) 25vw, 100vw" @endif alt="{{ $member->name }}" class="w-full h-52 object-cover" />
                     @endif
                     <div class="p-4">
                         <div class="font-semibold">{{ $member->name }}</div>

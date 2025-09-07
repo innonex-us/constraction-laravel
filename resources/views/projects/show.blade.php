@@ -8,7 +8,7 @@
     <p class="text-slate-400">{{ $project->location }} @if($project->client) • Client: {{ $project->client }} @endif</p>
     @if($project->featured_image_url)
         <div class="mt-6 aspect-video rounded-2xl overflow-hidden border border-white/10">
-            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $project->featured_image_url }}" @if($project->featured_image_srcset) data-srcset="{{ $project->featured_image_srcset }}" sizes="(min-width:1024px) 60vw, 100vw" @endif class="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" fetchpriority="low" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="{{ $project->featured_image_fallback_url ?? $project->featured_image_url }}" @php($wsrc = $project->featured_image_srcset_webp ?? $project->featured_image_srcset) @if($wsrc) data-srcset="{{ $wsrc }}" sizes="(min-width:1024px) 60vw, 100vw" @endif class="w-full h-full object-cover" />
         </div>
     @endif
     <article class="prose prose-invert mt-6">

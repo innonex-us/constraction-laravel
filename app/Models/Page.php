@@ -42,12 +42,36 @@ class Page extends Model
     public function getHeroImageSrcsetAttribute(): ?string
     {
         if (! $this->hero_image || str_starts_with($this->hero_image, 'http')) return null;
-        $variants = ImageHelper::variantsFor($this->hero_image);
+        $variants = ImageHelper::variantsFor($this->hero_image, 'jpg');
         if (empty($variants)) return null;
         $parts = [];
         foreach ($variants as $w => $path) {
             $parts[] = asset('storage/' . $path) . ' ' . $w . 'w';
         }
         return implode(', ', $parts);
+    }
+
+    public function getHeroImageSrcsetWebpAttribute(): ?string
+    {
+        if (! $this->hero_image || str_starts_with($this->hero_image, 'http')) return null;
+        $variants = ImageHelper::variantsFor($this->hero_image, 'webp');
+        if (empty($variants)) return null;
+        $parts = [];
+        foreach ($variants as $w => $path) {
+            $parts[] = asset('storage/' . $path) . ' ' . $w . 'w';
+        }
+        return implode(', ', $parts);
+    }
+
+    public function getHeroImageFallbackUrlAttribute(): ?string
+    {
+        if (! $this->hero_image) return null;
+        if (str_starts_with($this->hero_image, 'http')) return $this->hero_image_url;
+        $variants = ImageHelper::variantsFor($this->hero_image, 'jpg');
+        if (! empty($variants)) {
+            $last = end($variants);
+            if ($last) return asset('storage/' . $last);
+        }
+        return $this->hero_image_url;
     }
 }

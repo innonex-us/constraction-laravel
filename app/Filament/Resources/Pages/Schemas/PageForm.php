@@ -21,7 +21,11 @@ class PageForm
                 Textarea::make('content')
                     ->columnSpanFull(),
                 FileUpload::make('hero_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('pages')
+                    ->imageEditor()
+                    ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 TextInput::make('meta_title'),
                 Textarea::make('meta_description')
                     ->columnSpanFull(),

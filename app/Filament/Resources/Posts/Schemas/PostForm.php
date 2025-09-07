@@ -25,7 +25,11 @@ class PostForm
                     ->required()
                     ->columnSpanFull(),
                 FileUpload::make('featured_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('posts')
+                    ->imageEditor()
+                    ->afterStateUpdated(function ($state) { if ($state) \App\Support\ImageHelper::generateVariants($state); }),
                 DateTimePicker::make('published_at'),
                 Toggle::make('is_published')
                     ->required(),
