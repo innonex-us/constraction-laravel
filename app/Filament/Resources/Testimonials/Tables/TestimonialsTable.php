@@ -26,7 +26,7 @@ class TestimonialsTable
                 TextColumn::make('rating')
                     ->numeric()
                     ->sortable(),
-                ImageColumn::make('avatar_image'),
+                ImageColumn::make('avatar_image')->disk('public'),
                 IconColumn::make('is_featured')
                     ->boolean(),
                 TextColumn::make('order')

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Support\ImageHelper;
 
 class Testimonial extends Model
 {
@@ -14,4 +15,21 @@ class Testimonial extends Model
         'rating' => 'integer',
         'is_featured' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(function (Testimonial $t) {
+            if ($t->avatar_image && ! str_starts_with($t->avatar_image, 'http')) {
+                ImageHelper::generateVariants($t->avatar_image);
+            }
+        });
+    }
+
+    public function getAvatarImageUrlAttribute(): ?string
+    {
+        if (! $this->avatar_image) return null;
+        return str_starts_with($this->avatar_image, 'http')
+            ? $this->avatar_image
+            : asset('storage/' . ltrim($this->avatar_image, '/'));
+    }
 }

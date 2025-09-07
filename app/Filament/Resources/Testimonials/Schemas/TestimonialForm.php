@@ -24,7 +24,20 @@ class TestimonialForm
                 TextInput::make('rating')
                     ->numeric(),
                 FileUpload::make('avatar_image')
-                    ->image(),
+                    ->image()
+                    ->avatar()
+                    ->disk('public')
+                    ->directory('testimonials')
+                    ->imageEditor()
+                    ->circleCropper()
+                    ->imageEditorMode(2)
+                    ->imageEditorAspectRatios(['1:1'])
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('1:1')
+                    ->imageResizeTargetWidth('600')
+                    ->imageResizeTargetHeight('600')
+                    ->previewable(true)
+                    ->imagePreviewHeight('96'),
                 Toggle::make('is_featured')
                     ->required(),
                 TextInput::make('order')
