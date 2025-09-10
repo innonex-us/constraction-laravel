@@ -59,7 +59,7 @@ services:
     volumes:
       - mysql_dev_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3308:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -73,7 +73,7 @@ services:
     container_name: construction_redis_dev
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "6381:6379"
     volumes:
       - redis_dev_data:/data
     networks:

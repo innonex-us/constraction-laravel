@@ -32,19 +32,19 @@ open http://localhost:8080
 ## 🏗️ **Architecture Overview**
 
 ### **Production Stack**
-- **App Container**: Laravel + Apache + PHP 8.4
-- **MySQL**: Database with persistent storage
-- **Redis**: Caching and session storage
-- **Nginx**: Reverse proxy and load balancer
+- **App Container**: Laravel + Apache + PHP 8.4 (port 8080)
+- **MySQL**: Database with persistent storage (port 3307)
+- **Redis**: Caching and session storage (port 6380)
+- **Nginx**: Reverse proxy and load balancer (port 8081)
 - **Queue Worker**: Background job processing
 - **Scheduler**: Laravel cron jobs
 
 ### **Development Stack**
-- **App Container**: Laravel development server
-- **Vite Server**: Hot module replacement for assets
-- **MySQL**: Database with development data
-- **Redis**: Caching
-- **MailHog**: Email testing interface
+- **App Container**: Laravel development server (port 8000)
+- **Vite Server**: Hot module replacement for assets (port 5173)
+- **MySQL**: Database with development data (port 3308)
+- **Redis**: Caching (port 6381)
+- **MailHog**: Email testing interface (ports 1025, 8025)
 
 ## 🚀 **Deployment Commands**
 
