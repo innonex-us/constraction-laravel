@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  # Laravel Application (Development)
+  app:
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: construction_app_dev
+    restart: unless-stopped
+    working_dir: /var/www/html
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_HOST=mysql
+      - DB_DATABASE=construction_dev
+      - DB_USERNAME=construction_user
+      - DB_PASSWORD=construction_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - construction_network
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # Vite Development Server
+  vite:
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: construction_vite
+    restart: unless-stopped
+    working_dir: /var/www/html
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/node_modules
+    command: npm run dev -- --host=0.0.0.0
+    networks:
+      - construction_network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: construction_mysql_dev
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: construction_dev
+      MYSQL_USER: construction_user
+      MYSQL_PASSWORD: construction_password
+      MYSQL_ROOT_PASSWORD: root_password_dev
+    volumes:
+      - mysql_dev_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - construction_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: construction_redis_dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - construction_network
+
+  # MailHog (Email testing)
+  mailhog:
+    image: mailhog/mailhog
+    container_name: construction_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - construction_network
+
+volumes:
+  mysql_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+
+networks:
+  construction_network:
+    driver: bridge

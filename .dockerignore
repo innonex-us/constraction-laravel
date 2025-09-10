@@ -1,0 +1,16 @@
+# Add Docker-related files to .gitignore
+
+# Docker volumes
+mysql_data/
+mysql_dev_data/
+redis_data/
+redis_dev_data/
+
+# Docker environment files (keep templates)
+.env.docker.local
+
+# Docker logs
+docker/logs/
+
+# Docker SSL certificates
+docker/ssl/

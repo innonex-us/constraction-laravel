@@ -109,37 +109,43 @@ npm run dev
 Visit `http://localhost:8000` to view the website.
 Admin panel is available at `http://localhost:8000/admin`.
 
-## 🌐 cPanel Deployment
+## 🌐 Deployment Options
 
-Choose your deployment method based on your hosting access:
+Choose your deployment method based on your infrastructure:
 
-### 🔑 **Option A: SSH Access (Recommended)**
-See the SSH deployment section below.
+### � **Option A: Docker Deployment (Recommended)**
+Modern containerized deployment with full development and production environments:
 
-### 📁 **Option B: FTP-Only Access**
-If you only have FTP access (no SSH), use our simplified FTP deployment process:
+```bash
+# Development environment
+./docker-deploy.sh dev
+
+# Production environment
+./docker-deploy.sh prod
+```
+
+**📖 For detailed Docker instructions, see: `DOCKER-DEPLOYMENT-GUIDE.md`**
+
+### � **Option B: cPanel with SSH Access**
+Traditional shared hosting deployment with automated scripts.
+
+### 📁 **Option C: cPanel with FTP-Only Access**
+Simplified deployment for hosting accounts without SSH access:
 
 ```bash
 # Run the FTP preparation script
 ./prepare-ftp-deployment.sh
 ```
 
-This will:
-- Install all dependencies locally
-- Build production assets
-- Generate application key
-- Create a ready-to-upload package
-- Include setup scripts for cPanel
-
 **📖 For detailed FTP instructions, see: `FTP-DEPLOYMENT-GUIDE.md`**
 
 ---
 
-### Prerequisites for cPanel Hosting
-- PHP 8.4+ enabled
-- MySQL database created
-- FTP access or SSH access
-- Composer access (for SSH) or upload vendor folder (for FTP)
+### Prerequisites for Deployment
+- **Docker**: For containerized deployment (recommended)
+- **PHP 8.4+**: For traditional hosting
+- **MySQL**: Database server
+- **Web Server**: Apache/Nginx for traditional hosting
 
 ### Step 1: Prepare for Production
 
