@@ -41,6 +41,10 @@
                     <div class="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                         @if($settings?->hero_video_url)
                             <video src="{{ $settings->hero_video_url }}" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+                        @elseif($settings?->hero_image_url)
+                            @php($hf = $settings->hero_image_fallback_url ?? $settings->hero_image_url)
+                            @php($hs = $settings->hero_image_srcset_webp ?? $settings->hero_image_srcset)
+                            <img loading="lazy" src="{{ $hf }}" @if($hs) srcset="{{ $hs }}" sizes="(min-width:768px) 50vw, 100vw" @endif alt="Hero Image" class="w-full h-full object-cover" />
                         @else
                             <img src="https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop" alt="Construction" class="w-full h-full object-cover" />
                         @endif
@@ -51,9 +55,9 @@
     </section>
 
     @php($badges = \App\Models\Badge::query()->where('is_active', true)->orderBy('order')->get())
-    @if($badges->count())
+    @if($settings?->show_badges_section && $badges->count())
     <section class="mx-auto max-w-7xl px-4 py-8">
-        <h3 class="text-xl font-semibold mb-4">Certifications & Affiliations</h3>
+        <h3 class="text-xl font-semibold mb-4">{{ $settings->badges_section_heading ?? 'Certifications & Affiliations' }}</h3>
         <div class="flex flex-wrap items-center gap-6 opacity-80 hover:opacity-100 transition">
             @foreach($badges as $b)
                 @php($src = $b->image_url)
@@ -70,13 +74,14 @@
     </section>
     @endif
 
+    @if($settings?->show_services_section && $services->count())
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold">Services</h2>
+            <h2 class="text-2xl md:text-3xl font-bold">{{ $settings->services_section_heading ?? 'Services' }}</h2>
             <a href="/services" class="text-emerald-300 hover:text-emerald-200">View all</a>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @forelse($services as $service)
+            @foreach($services as $service)
                 <a href="{{ route('services.show', $service->slug) }}" class="group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="flex items-center justify-between">
                         <h3 class="text-xl font-semibold">{{ $service->name }}</h3>
@@ -84,19 +89,19 @@
                     </div>
                     <p class="mt-2 text-slate-400">{{ $service->excerpt }}</p>
                 </a>
-            @empty
-                <p class="text-slate-400">No services yet.</p>
-            @endforelse
+            @endforeach
         </div>
     </section>
+    @endif
 
+    @if($settings?->show_projects_section && $projects->count())
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold">Featured Projects</h2>
+            <h2 class="text-2xl md:text-3xl font-bold">{{ $settings->projects_section_heading ?? 'Featured Projects' }}</h2>
             <a href="/projects" class="text-emerald-300 hover:text-emerald-200">View all</a>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @forelse($projects as $project)
+            @foreach($projects as $project)
                 <a href="{{ route('projects.show', $project->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="aspect-video overflow-hidden">
                         @php($pf = $project->featured_image_fallback_url ?? $project->featured_image_url)
@@ -108,16 +113,16 @@
                         <p class="text-slate-400 text-sm">{{ $project->location }}</p>
                     </div>
                 </a>
-            @empty
-                <p class="text-slate-400">No projects yet.</p>
-            @endforelse
+            @endforeach
         </div>
     </section>
+    @endif
 
+    @if($settings?->show_testimonials_section && $testimonials->count())
     <section class="mx-auto max-w-7xl px-4 py-16">
-        <h2 class="text-2xl md:text-3xl font-bold mb-8">What clients say</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-8">{{ $settings->testimonials_section_heading ?? 'What clients say' }}</h2>
         <div class="grid md:grid-cols-3 gap-6">
-            @forelse($testimonials as $t)
+            @foreach($testimonials as $t)
                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-4" data-aos="zoom-in">
                     <p class="text-slate-300 flex-1">“{{ $t->content }}”</p>
                     <div class="flex items-center gap-3">
@@ -130,39 +135,40 @@
                         </div>
                     </div>
                 </div>
-            @empty
-                <p class="text-slate-400">No testimonials yet.</p>
-            @endforelse
+            @endforeach
         </div>
     </section>
+    @endif
 
+    @if($settings?->show_clients_section && $clients->count())
     {{-- Clients marquee --}}
     <section class="mx-auto max-w-7xl px-4 py-8">
+        <h3 class="text-xl font-semibold mb-4">{{ $settings->clients_section_heading ?? 'Our Clients' }}</h3>
         <div class="marquee rounded-2xl border border-white/10 bg-white/5 p-5" data-aos="fade-up">
             <div class="marquee-track">
-                @php($logos = [
-                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=HealthCo',
-                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=TechCorp',
-                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=City+Works',
-                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=Port+Authority',
-                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=EduTrust',
-                    'https://dummyimage.com/140x48/0b1220/94a3b8&text=BioLabs',
-                ])
-                @foreach(array_merge($logos, $logos) as $logo)
-                    <img loading="lazy" src="{{ $logo }}" alt="Client" class="h-8 opacity-70 hover:opacity-100 transition" />
+                @foreach(array_merge($clients->all(), $clients->all()) as $client)
+                    @if($client->website_url)
+                        <a href="{{ $client->website_url }}" target="_blank" rel="noopener" class="block">
+                            <img loading="lazy" src="{{ $client->logo_url }}" alt="{{ $client->name }}" class="h-8 opacity-70 hover:opacity-100 transition" />
+                        </a>
+                    @else
+                        <img loading="lazy" src="{{ $client->logo_url }}" alt="{{ $client->name }}" class="h-8 opacity-70 hover:opacity-100 transition" />
+                    @endif
                 @endforeach
             </div>
         </div>
     </section>
+    @endif
 
+    @if($settings?->show_news_section && $posts->count())
     {{-- Latest news / insights --}}
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold">Latest News</h2>
+            <h2 class="text-2xl md:text-3xl font-bold">{{ $settings->news_section_heading ?? 'Latest News' }}</h2>
             <a href="{{ route('news.index') }}" class="text-emerald-300 hover:text-emerald-200">All posts</a>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
-            @forelse(($posts ?? collect()) as $post)
+            @foreach(($posts ?? collect()) as $post)
                 <a href="{{ route('news.show', $post->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                     <div class="aspect-[16/10] overflow-hidden bg-white/5">
                         <img loading="lazy" src="{{ $post->featured_image ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
@@ -175,11 +181,10 @@
                         @endif
                     </div>
                 </a>
-            @empty
-                <p class="text-slate-400">No posts yet.</p>
-            @endforelse
+            @endforeach
         </div>
     </section>
+    @endif
 
     {{-- CTA banner --}}
     <section class="mx-auto max-w-7xl px-4 pb-20">
