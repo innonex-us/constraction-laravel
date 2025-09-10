@@ -26,11 +26,81 @@
             --brand: {{ $settings->primary_color ?? '#10b981' }};
             --brand-2: {{ $settings->secondary_color ?? '#0ea5e9' }};
         }
-        body{ font-family: 'Outfit', system-ui, sans-serif; }
+        body{ 
+            font-family: 'Outfit', system-ui, sans-serif; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
         .glass{ backdrop-filter: blur(10px); background: color-mix(in oklab, white 8%, transparent); }
         .neon{ text-shadow: 0 0 12px color-mix(in oklab, var(--brand) 50%, transparent); }
         .gradient{ background-image: radial-gradient(1200px 400px at 10% -10%, color-mix(in oklab, var(--brand) 35%, transparent), transparent),
             radial-gradient(900px 300px at 90% -10%, color-mix(in oklab, var(--brand-2) 35%, transparent), transparent);
+        }
+        
+        /* Mobile-first responsive enhancements */
+        @media (max-width: 767px) {
+            body { 
+                font-size: 16px; /* Prevent zoom on iOS */
+                overflow-x: hidden;
+            }
+            .mobile-native {
+                padding: 1rem;
+                margin: 0.5rem 0;
+            }
+            .mobile-card {
+                border-radius: 1rem;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+            .mobile-full-width {
+                margin-left: -1rem;
+                margin-right: -1rem;
+                border-radius: 0;
+            }
+            .mobile-button {
+                min-height: 44px; /* iOS touch target */
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.75rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            .mobile-list-item {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+            }
+        }
+        
+        /* Tablet optimizations */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .tablet-grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tablet-spacing {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Enhanced touch targets for mobile */
+        @media (pointer: coarse) {
+            a, button, [role="button"] {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            .nav-link {
+                padding: 0.75rem 1rem;
+                margin: 0.25rem 0;
+                border-radius: 0.5rem;
+                display: block;
+            }
         }
         /* Brand overrides to ensure admin-set colors take effect even without a fresh build */
         :where(.text-emerald-300){ color: var(--brand) !important }
@@ -62,10 +132,10 @@
                 @if(!empty($settings?->logo_path))
                     <img src="{{ asset('storage/' . ltrim($settings->logo_path, '/')) }}" alt="{{ $settings->site_name ?? 'Logo' }}" class="site-logo" />
                 @else
-                    <span class="font-semibold tracking-wide">{{ $settings->site_name ?? 'Construction Co.' }}</span>
+                    <span class="font-semibold tracking-wide text-lg">{{ $settings->site_name ?? 'Construction Co.' }}</span>
                 @endif
             </a>
-            <nav class="hidden md:flex items-center gap-6 text-sm">
+            <nav class="hidden lg:flex items-center gap-6 text-sm">
                 <a href="/services" class="hover:text-emerald-300 transition">Services</a>
                 <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
                 <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
@@ -79,26 +149,81 @@
                 <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
                 <a href="/admin" data-turbo="false" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
             </nav>
-            <button id="menu-btn" class="md:hidden inline-flex items-center justify-center rounded-md border border-white/10 px-3 py-2" aria-expanded="false" aria-controls="mobile-nav">
+            <button id="menu-btn" class="lg:hidden inline-flex items-center justify-center rounded-md border border-white/10 px-3 py-2 min-h-[44px] min-w-[44px]" aria-expanded="false" aria-controls="mobile-nav">
                 <span class="sr-only">Open menu</span>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-200"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-slate-200">
+                    <path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/>
+                </svg>
             </button>
         </div>
     </div>
-    <div id="mobile-nav" class="md:hidden hidden bg-black/60 border-b border-white/10">
-        <div class="mx-auto max-w-7xl px-4 py-3 grid gap-3 text-sm">
-            <a href="/services" class="hover:text-emerald-300 transition">Services</a>
-            <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
-            <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
-            <a href="/safety" class="hover:text-emerald-300 transition">Safety</a>
-            <a href="/news" class="hover:text-emerald-300 transition">News</a>
-            @php($navPages = \App\Models\Page::query()->where('is_published', true)->where('show_in_nav', true)->orderBy('nav_order')->take(6)->get())
-            @foreach($navPages as $p)
-                <a href="{{ url('/page/'.$p->slug) }}" class="hover:text-emerald-300 transition">{{ $p->title }}</a>
-            @endforeach
-            <a href="/partners" class="hover:text-emerald-300 transition">Partners</a>
-            <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
-            <a href="/admin" data-turbo="false" class="px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-max">Admin</a>
+    <!-- Enhanced Mobile Navigation -->
+    <div id="mobile-nav" class="lg:hidden hidden">
+        <div class="absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-b border-white/10">
+            <div class="mx-auto max-w-7xl px-4 py-6">
+                <div class="grid gap-1">
+                    <a href="/services" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>Services</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="/projects" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>Projects</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="/gallery" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>Gallery</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="/safety" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>Safety</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="/news" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>News</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    @php($navPages = \App\Models\Page::query()->where('is_published', true)->where('show_in_nav', true)->orderBy('nav_order')->take(6)->get())
+                    @foreach($navPages as $p)
+                        <a href="{{ url('/page/'.$p->slug) }}" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                            <span>{{ $p->title }}</span>
+                            <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    @endforeach
+                    <a href="/partners" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>Partners</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="/contact" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>Contact</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <div class="border-t border-white/10 mt-4 pt-4">
+                        <a href="/admin" data-turbo="false" class="mobile-button bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-full">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Admin Panel
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </header>
@@ -230,12 +355,36 @@
         const menuBtn = document.getElementById('menu-btn');
         const mobileNav = document.getElementById('mobile-nav');
         if (menuBtn && mobileNav && !menuBtn.dataset.bound) {
-            const open = () => { mobileNav.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); menuBtn.setAttribute('aria-expanded','true'); };
-            const close = () => { mobileNav.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); menuBtn.setAttribute('aria-expanded','false'); };
+            const open = () => { 
+                mobileNav.classList.remove('hidden'); 
+                document.body.classList.add('overflow-hidden'); 
+                menuBtn.setAttribute('aria-expanded','true');
+                // Animate menu icon to X
+                const svg = menuBtn.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>';
+                }
+            };
+            const close = () => { 
+                mobileNav.classList.add('hidden'); 
+                document.body.classList.remove('overflow-hidden'); 
+                menuBtn.setAttribute('aria-expanded','false');
+                // Animate menu icon back to hamburger
+                const svg = menuBtn.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = '<path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/>';
+                }
+            };
             menuBtn.addEventListener('click', () => mobileNav.classList.contains('hidden') ? open() : close());
             mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
-            window.addEventListener('resize', () => { if (window.innerWidth >= 768) close(); });
+            window.addEventListener('resize', () => { if (window.innerWidth >= 1024) close(); });
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (!mobileNav.contains(e.target) && !menuBtn.contains(e.target) && !mobileNav.classList.contains('hidden')) {
+                    close();
+                }
+            });
             menuBtn.dataset.bound = '1';
         }
 
@@ -269,8 +418,24 @@
 </script>
 @stack('scripts')
 
-<a href="/contact" class="fixed bottom-5 right-5 z-50 rounded-full bg-emerald-500 text-slate-900 font-semibold shadow-lg hover:bg-emerald-400 transition px-5 py-3">
-    Contact Us
+<!-- Mobile Contact Button -->
+<a href="/contact" class="fixed bottom-6 right-6 z-50 lg:hidden bg-emerald-500 text-slate-900 font-semibold shadow-xl hover:bg-emerald-400 transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 min-h-[44px] px-4 py-3 rounded-xl">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+    </svg>
+    <span>Contact</span>
+</a>
+
+<!-- Desktop Contact Button -->
+<a href="/contact" class="hidden lg:flex fixed bottom-6 right-6 z-50 bg-emerald-500 text-slate-900 font-medium shadow-lg hover:shadow-xl hover:bg-emerald-400 transition-all duration-200 hover:scale-105 items-center gap-2 px-4 py-2.5 rounded-lg text-sm">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+    </svg>
+    <span>Contact Us</span>
+</a>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+    </svg>
+    <span>Contact Us</span>
 </a>
 </body>
 </html>

@@ -2,19 +2,103 @@
 @extends('layouts.app', ['settings' => $settings, 'title' => 'Trade Partners'])
 
 @section('content')
-<section class="mx-auto max-w-7xl px-4 py-16">
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+<section class="mx-auto max-w-7xl px-4 py-8 lg:py-16">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-6 lg:mb-8 mobile-native lg:px-0">
         <div>
-            <h1 class="text-3xl md:text-4xl font-bold">Trade Partners</h1>
-            <p class="text-slate-300 mt-2">Our qualified trade partners and subcontractors.</p>
+            <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold">Trade Partners</h1>
+            <p class="text-slate-300 mt-2 text-sm md:text-base">Our qualified trade partners and subcontractors.</p>
         </div>
-        <a href="{{ route('partners.prequal') }}" class="px-4 py-2 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 transition w-max">
+        <a href="{{ route('partners.prequal') }}" class="mobile-button bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 transition w-full lg:w-max">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
             Apply for Prequalification
         </a>
     </div>
 
     @if($partners->count() > 0)
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Mobile list view -->
+        <div class="lg:hidden px-4">
+            @foreach($partners as $partner)
+                <div class="mobile-card" data-aos="fade-up">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold">{{ $partner->company_name }}</h3>
+                            @if($partner->trade)
+                                <p class="text-slate-400 text-sm">{{ $partner->trade }}</p>
+                            @endif
+                        </div>
+                        @if($partner->years_in_business)
+                            <span class="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-300 text-xs flex-shrink-0 ml-3">
+                                {{ $partner->years_in_business }} years
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="space-y-3">
+                        @if($partner->contact_name)
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                <span class="text-slate-300 text-sm">{{ $partner->contact_name }}</span>
+                            </div>
+                        @endif
+
+                        @if($partner->email)
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <a href="mailto:{{ $partner->email }}" class="text-emerald-300 hover:text-emerald-200 text-sm">{{ $partner->email }}</a>
+                            </div>
+                        @endif
+
+                        @if($partner->phone)
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                                <a href="tel:{{ $partner->phone }}" class="text-emerald-300 hover:text-emerald-200 text-sm">{{ $partner->phone }}</a>
+                            </div>
+                        @endif
+
+                        @if($partner->city && $partner->state)
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="text-slate-300 text-sm">{{ $partner->city }}, {{ $partner->state }}</span>
+                            </div>
+                        @endif
+
+                        @if($partner->license_number)
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </svg>
+                                <span class="text-slate-400 text-xs">License: {{ $partner->license_number }}</span>
+                            </div>
+                        @endif
+
+                        @if($partner->website)
+                            <div class="pt-3 border-t border-white/10">
+                                <a href="{{ $partner->website }}" target="_blank" rel="noopener" class="mobile-button bg-white/5 text-slate-200 border border-white/10 hover:bg-white/10 w-full text-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                    Visit Website
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Desktop grid view -->
+        <div class="hidden lg:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($partners as $partner)
                 <div class="p-6 rounded-2xl bg-white/5 border border-white/10" data-aos="fade-up">
                     <div class="flex items-start justify-between mb-4">
