@@ -9,6 +9,17 @@ use App\Models\Prequalification;
 
 class PartnersController extends Controller
 {
+    public function index(): View
+    {
+        // Show all prequalified partners
+        $partners = Prequalification::query()
+            ->whereNotNull('company_name') // Basic filter to ensure valid entries
+            ->orderBy('company_name')
+            ->get();
+        
+        return view('partners.index', compact('partners'));
+    }
+
     public function prequalForm(): View
     {
         return view('partners.prequal');

@@ -69,11 +69,13 @@
                 <a href="/services" class="hover:text-emerald-300 transition">Services</a>
                 <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
                 <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
+                <a href="/safety" class="hover:text-emerald-300 transition">Safety</a>
                 <a href="/news" class="hover:text-emerald-300 transition">News</a>
                 @php($navPages = \App\Models\Page::query()->where('is_published', true)->where('show_in_nav', true)->orderBy('nav_order')->take(6)->get())
                 @foreach($navPages as $p)
                     <a href="{{ url('/page/'.$p->slug) }}" class="hover:text-emerald-300 transition">{{ $p->title }}</a>
                 @endforeach
+                <a href="/partners" class="hover:text-emerald-300 transition">Partners</a>
                 <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
                 <a href="/admin" data-turbo="false" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
             </nav>
@@ -88,11 +90,13 @@
             <a href="/services" class="hover:text-emerald-300 transition">Services</a>
             <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
             <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
+            <a href="/safety" class="hover:text-emerald-300 transition">Safety</a>
             <a href="/news" class="hover:text-emerald-300 transition">News</a>
             @php($navPages = \App\Models\Page::query()->where('is_published', true)->where('show_in_nav', true)->orderBy('nav_order')->take(6)->get())
             @foreach($navPages as $p)
                 <a href="{{ url('/page/'.$p->slug) }}" class="hover:text-emerald-300 transition">{{ $p->title }}</a>
             @endforeach
+            <a href="/partners" class="hover:text-emerald-300 transition">Partners</a>
             <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
             <a href="/admin" data-turbo="false" class="px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-max">Admin</a>
         </div>

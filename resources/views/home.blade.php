@@ -31,10 +31,10 @@
                             <dt class="text-sm text-slate-400">Projects</dt>
                             <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_projects ?? '500+' }}</dd>
                         </div>
-                        <div class="p-4 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="200">
-                            <dt class="text-sm text-slate-400">Safety EMR</dt>
+                        <a href="/safety" class="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 transition group" data-aos="zoom-in" data-aos-delay="200">
+                            <dt class="text-sm text-slate-400 group-hover:text-emerald-300 transition">Safety EMR</dt>
                             <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_emr ?? '0.62' }}</dd>
-                        </div>
+                        </a>
                     </dl>
                 </div>
                 <div class="relative" data-aos="fade-left">
@@ -186,6 +186,22 @@
         </div>
     </section>
     @endif
+
+    {{-- Trade Partners CTA --}}
+    <section class="mx-auto max-w-7xl px-4 py-16">
+        <div class="text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">Looking for Quality Trade Partners?</h2>
+            <p class="text-slate-300 mb-8 max-w-2xl mx-auto">We maintain strong relationships with qualified subcontractors and trade partners who share our commitment to safety and excellence.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/partners" class="px-6 py-3 rounded-lg bg-white/5 border border-white/10 text-slate-200 hover:border-white/30 hover:bg-white/10 transition">
+                    View Our Partners
+                </a>
+                <a href="/partners/prequal" class="px-6 py-3 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 transition">
+                    Apply for Prequalification
+                </a>
+            </div>
+        </div>
+    </section>
 
     {{-- CTA banner --}}
     <section class="mx-auto max-w-7xl px-4 pb-20">

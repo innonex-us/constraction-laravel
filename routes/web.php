@@ -33,5 +33,6 @@ Route::get('/safety', [SafetyController::class, 'index'])->name('safety.index');
 
 Route::get('/partners/prequal', [PartnersController::class, 'prequalForm'])->name('partners.prequal');
 Route::post('/partners/prequal', [PartnersController::class, 'prequalSubmit'])->name('partners.prequal.submit');
+Route::get('/partners', [PartnersController::class, 'index'])->name('partners.index');
 
 Route::get('/projects/map', [ProjectController::class, 'map'])->name('projects.map');
