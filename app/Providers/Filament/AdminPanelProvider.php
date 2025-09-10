@@ -47,6 +47,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop(true)
             ->sidebarFullyCollapsibleOnDesktop(true)
             ->navigationGroups([
+                'Home',
                 'Content',
                 'Portfolio',
                 'Operations',

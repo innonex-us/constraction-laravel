@@ -23,7 +23,8 @@ class SiteSettingResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog8Tooth;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Settings';
+    protected static ?string $navigationLabel = 'Homepage';
+    protected static string|UnitEnum|null $navigationGroup = 'Home';
     protected static ?int $navigationSort = 10;
 
     protected static ?string $recordTitleAttribute = 'site_name';
