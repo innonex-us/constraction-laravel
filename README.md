@@ -111,14 +111,39 @@ Admin panel is available at `http://localhost:8000/admin`.
 
 ## 🌐 cPanel Deployment
 
+Choose your deployment method based on your hosting access:
+
+### 🔑 **Option A: SSH Access (Recommended)**
+See the SSH deployment section below.
+
+### 📁 **Option B: FTP-Only Access**
+If you only have FTP access (no SSH), use our simplified FTP deployment process:
+
+```bash
+# Run the FTP preparation script
+./prepare-ftp-deployment.sh
+```
+
+This will:
+- Install all dependencies locally
+- Build production assets
+- Generate application key
+- Create a ready-to-upload package
+- Include setup scripts for cPanel
+
+**📖 For detailed FTP instructions, see: `FTP-DEPLOYMENT-GUIDE.md`**
+
+---
+
 ### Prerequisites for cPanel Hosting
 - PHP 8.4+ enabled
-- Composer access (or upload vendor folder)
 - MySQL database created
-- SSH access (recommended) or File Manager access
+- FTP access or SSH access
+- Composer access (for SSH) or upload vendor folder (for FTP)
 
 ### Step 1: Prepare for Production
 
+#### For SSH Access:
 #### Build Production Assets Locally
 ```bash
 # Run the build script
@@ -129,7 +154,14 @@ npm ci
 npm run build
 ```
 
-#### Prepare Files
+#### For FTP-Only Access:
+```bash
+# Run the FTP preparation script (includes everything)
+./prepare-ftp-deployment.sh
+```
+This creates a complete deployment package ready for FTP upload.
+
+#### Prepare Environment File (SSH only - FTP script handles this)
 1. Copy `.env.cpanel.example` to `.env` and configure:
    ```bash
    cp .env.cpanel.example .env
