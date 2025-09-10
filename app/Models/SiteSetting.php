@@ -108,4 +108,12 @@ class SiteSetting extends Model
         }
         return $this->hero_image_url;
     }
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (!$this->logo_path) return null;
+        return str_starts_with($this->logo_path, 'http')
+            ? $this->logo_path
+            : asset('storage/' . ltrim($this->logo_path, '/'));
+    }
 }

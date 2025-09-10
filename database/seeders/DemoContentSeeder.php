@@ -72,7 +72,7 @@ class DemoContentSeeder extends Seeder
                     'status' => 'completed',
                     'is_featured' => $i < 2,
                     'completed_at' => now()->subMonths(6 + $i * 3),
-                    'featured_image' => 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop',
+                    'featured_image' => '',
                     'lat' => $lat,
                     'lng' => $lng,
                 ]

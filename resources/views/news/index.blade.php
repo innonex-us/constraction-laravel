@@ -8,7 +8,7 @@
         @forelse($posts as $post)
             <a href="{{ route('news.show', $post->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
                 <div class="aspect-[16/10] overflow-hidden bg-white/5">
-                    @php($imgUrl = $post->featured_image_url ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop')
+                    @php($imgUrl = $post->featured_image_url ?: ($settings?->logo_url ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop'))
                     <img loading="lazy" decoding="async" fetchpriority="low" src="{{ $imgUrl }}" @if($post->featured_image_srcset) srcset="{{ $post->featured_image_srcset }}" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" @endif class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                 </div>
                 <div class="p-5">

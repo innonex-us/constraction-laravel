@@ -67,7 +67,7 @@
         @foreach($projects as $project)
             <a href="{{ route('projects.show', $project->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition">
                 <div class="aspect-video overflow-hidden">
-                    <img loading="lazy" decoding="async" fetchpriority="low" src="{{ $project->featured_image ?: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1600&auto=format&fit=crop' }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+                    <img loading="lazy" decoding="async" fetchpriority="low" src="{{ $project->featured_image_url ?: ($settings?->logo_url ?: '') }}" class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
                 </div>
                 <div class="p-5">
                     <h3 class="text-lg font-semibold">{{ $project->title }}</h3>
