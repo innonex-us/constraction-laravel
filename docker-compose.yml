@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  # Laravel Application
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: construction_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    ports:
+      - "8080:80"
+    volumes:
+      - ./storage:/var/www/html/storage
+      - ./public/storage:/var/www/html/public/storage
+    environment:
+      - APP_ENV=production
+      - DB_HOST=mysql
+      - DB_DATABASE=construction_db
+      - DB_USERNAME=construction_user
+      - DB_PASSWORD=construction_password
+      - REDIS_HOST=redis
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - construction_network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: construction_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: construction_db
+      MYSQL_USER: construction_user
+      MYSQL_PASSWORD: construction_password
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - construction_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: construction_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - construction_network
+
+  # Nginx Reverse Proxy (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: construction_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/sites:/etc/nginx/sites-available:ro
+      - ./docker/ssl:/etc/ssl/certs:ro
+      - ./public:/var/www/html/public:ro
+    depends_on:
+      - app
+    networks:
+      - construction_network
+
+  # Queue Worker
+  queue:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: construction_queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./storage:/var/www/html/storage
+    environment:
+      - APP_ENV=production
+      - DB_HOST=mysql
+      - DB_DATABASE=construction_db
+      - DB_USERNAME=construction_user
+      - DB_PASSWORD=construction_password
+      - REDIS_HOST=redis
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - construction_network
+
+  # Scheduler (Laravel Cron)
+  scheduler:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: construction_scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./storage:/var/www/html/storage
+    environment:
+      - APP_ENV=production
+      - DB_HOST=mysql
+      - DB_DATABASE=construction_db
+      - DB_USERNAME=construction_user
+      - DB_PASSWORD=construction_password
+      - REDIS_HOST=redis
+    command: php artisan schedule:work
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - construction_network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  construction_network:
+    driver: bridge
