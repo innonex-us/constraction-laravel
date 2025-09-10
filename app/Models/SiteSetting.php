@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SiteSetting extends Model
 {
     protected $fillable = [
-        'site_name','logo_path','primary_color','secondary_color','address','phone','email','headline','hero_video_url','social_links','theme',
+        'site_name','logo_path','primary_color','secondary_color','address','phone','email','headline','subheadline','hero_video_url','social_links','theme','stat_years','stat_projects','stat_emr','cta_heading','cta_text','cta_button_text','cta_button_url',
     ];
 
     protected $casts = [
