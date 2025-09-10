@@ -16,7 +16,7 @@
                         {{ $settings->headline ?? 'Building the future with precision and care.' }}
                     </h1>
                     <p class="mt-4 text-slate-300 text-lg max-w-prose">
-                        From preconstruction to delivery, we provide end‑to‑end construction services across markets.
+                        {{ $settings->subheadline ?? 'From preconstruction to delivery, we provide end‑to‑end construction services across markets.' }}
                     </p>
                     <div class="mt-8 flex items-center gap-4">
                         <a href="/projects" class="px-6 py-3 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">Explore Projects</a>
@@ -25,15 +25,15 @@
                     <dl class="mt-10 grid grid-cols-3 gap-6 text-center">
                         <div class="p-4 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in">
                             <dt class="text-sm text-slate-400">Years</dt>
-                            <dd class="mt-1 text-3xl font-bold">25+</dd>
+                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_years ?? '25+' }}</dd>
                         </div>
                         <div class="p-4 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="100">
                             <dt class="text-sm text-slate-400">Projects</dt>
-                            <dd class="mt-1 text-3xl font-bold">500+</dd>
+                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_projects ?? '500+' }}</dd>
                         </div>
                         <div class="p-4 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="200">
                             <dt class="text-sm text-slate-400">Safety EMR</dt>
-                            <dd class="mt-1 text-3xl font-bold">0.62</dd>
+                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_emr ?? '0.62' }}</dd>
                         </div>
                     </dl>
                 </div>
@@ -186,10 +186,10 @@
         <div class="shine-border rounded-2xl p-0.5" data-aos="zoom-in">
             <div class="rounded-2xl bg-gradient-to-br from-emerald-500/10 to-sky-500/10 px-6 py-10 md:px-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
-                    <h3 class="text-2xl md:text-3xl font-bold">Ready to build something great?</h3>
-                    <p class="text-slate-300 mt-2">Let’s discuss your project and how we can help.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold">{{ $settings->cta_heading ?? 'Ready to build something great?' }}</h3>
+                    <p class="text-slate-300 mt-2">{{ $settings->cta_text ?? 'Let’s discuss your project and how we can help.' }}</p>
                 </div>
-                <a href="/contact" class="px-6 py-3 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">Get in touch</a>
+                <a href="{{ $settings->cta_button_url ?? '/contact' }}" class="px-6 py-3 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">{{ $settings->cta_button_text ?? 'Get in touch' }}</a>
             </div>
         </div>
     </section>

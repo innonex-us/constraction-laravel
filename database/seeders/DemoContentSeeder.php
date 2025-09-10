@@ -23,6 +23,14 @@ class DemoContentSeeder extends Seeder
         SiteSetting::firstOrCreate([], [
             'site_name' => 'Lombii Construction',
             'headline' => 'Making a difference in how the world is built.',
+            'subheadline' => 'From preconstruction to delivery, we provide end‑to‑end construction services across markets.',
+            'stat_years' => '25+',
+            'stat_projects' => '500+',
+            'stat_emr' => '0.62',
+            'cta_heading' => 'Ready to build something great?',
+            'cta_text' => 'Let’s discuss your project and how we can help.',
+            'cta_button_text' => 'Get in touch',
+            'cta_button_url' => '/contact',
             'primary_color' => '#10b981',
             'secondary_color' => '#0ea5e9',
         ]);

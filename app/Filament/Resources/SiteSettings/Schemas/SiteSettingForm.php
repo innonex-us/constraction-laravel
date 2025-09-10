@@ -73,7 +73,19 @@ class SiteSettingForm
                     ->label('Email address')
                     ->email(),
                 TextInput::make('headline'),
+                Textarea::make('subheadline'),
                 TextInput::make('hero_video_url'),
+                Fieldset::make('Homepage Stats')->schema([
+                    TextInput::make('stat_years')->label('Years'),
+                    TextInput::make('stat_projects')->label('Projects'),
+                    TextInput::make('stat_emr')->label('Safety EMR'),
+                ])->columns(3),
+                Fieldset::make('Call to Action')->schema([
+                    TextInput::make('cta_heading'),
+                    Textarea::make('cta_text')->columnSpanFull(),
+                    TextInput::make('cta_button_text'),
+                    TextInput::make('cta_button_url'),
+                ]),
                 Textarea::make('social_links')
                     ->columnSpanFull(),
                 TextInput::make('theme')
