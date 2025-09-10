@@ -2,9 +2,14 @@
 
 echo "🚀 Starting Laravel Construction Website..."
 
-# Wait for MySQL to be ready
+# Wait for MySQL/MariaDB to be ready
 echo "⏳ Waiting for MySQL to be ready..."
-while ! mysqladmin ping -h"$DB_HOST" --silent; do
+MYSQL_ADMIN_CMD=$(command -v mysqladmin || command -v mariadb-admin)
+if [ -z "$MYSQL_ADMIN_CMD" ]; then
+    echo "❌ mysqladmin or mariadb-admin not found."
+    exit 1
+fi
+while ! "$MYSQL_ADMIN_CMD" ping -h"$DB_HOST" --silent; do
     sleep 1
 done
 
