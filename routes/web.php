@@ -10,6 +10,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\SafetyController;
 use App\Http\Controllers\PartnersController;
+use App\Http\Controllers\InstallController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -36,3 +37,16 @@ Route::post('/partners/prequal', [PartnersController::class, 'prequalSubmit'])->
 Route::get('/partners', [PartnersController::class, 'index'])->name('partners.index');
 
 Route::get('/projects/map', [ProjectController::class, 'map'])->name('projects.map');
+
+// Installation Routes
+Route::prefix('install')->name('install.')->group(function () {
+    Route::get('/', [InstallController::class, 'index'])->name('index');
+    Route::get('/requirements', [InstallController::class, 'requirements'])->name('requirements');
+    Route::get('/database', [InstallController::class, 'database'])->name('database');
+    Route::post('/database/test', [InstallController::class, 'testDatabase'])->name('database.test');
+    Route::post('/database/save', [InstallController::class, 'saveDatabase'])->name('database.save');
+    Route::get('/admin', [InstallController::class, 'admin'])->name('admin');
+    Route::post('/admin/create', [InstallController::class, 'createAdmin'])->name('admin.create');
+    Route::get('/complete', [InstallController::class, 'complete'])->name('complete');
+    Route::get('/error', [InstallController::class, 'error'])->name('error');
+});
