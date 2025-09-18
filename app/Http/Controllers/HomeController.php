@@ -8,6 +8,7 @@ use App\Models\Testimonial;
 use App\Models\SiteSetting;
 use App\Models\Post;
 use App\Models\Client;
+use App\Models\HeroSlide;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -15,6 +16,9 @@ class HomeController extends Controller
     public function index(): View
     {
         $settings = SiteSetting::first();
+        
+        // Get hero slides
+        $heroSlides = HeroSlide::active()->ordered()->get();
         
         // Get data based on settings
         $services = $settings?->show_services_section 
@@ -37,7 +41,7 @@ class HomeController extends Controller
             ? Client::query()->where('is_active', true)->orderBy('order')->get()
             : collect();
 
-        return view('home', compact('settings', 'services', 'projects', 'testimonials', 'posts', 'clients'));
+        return view('home', compact('settings', 'heroSlides', 'services', 'projects', 'testimonials', 'posts', 'clients'));
     }
 }
 

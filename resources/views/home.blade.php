@@ -2,6 +2,111 @@
 @extends('layouts.app', ['settings' => $settings])
 
 @section('content')
+    {{-- Hero Slider --}}
+    @if($heroSlides->count() > 0)
+    <section class="relative overflow-hidden pt-16 pb-12">
+        {{-- Background decoration --}}
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute -top-20 -left-20 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-20"
+                 style="background: radial-gradient(circle at center, var(--brand), transparent 60%)"></div>
+            <div class="absolute -top-40 -right-10 w-[25rem] h-[25rem] rounded-full blur-3xl opacity-20"
+                 style="background: radial-gradient(circle at center, var(--brand-2), transparent 60%)"></div>
+        </div>
+        <div class="mx-auto max-w-7xl px-4 relative z-10">
+            <div id="hero-slider" class="relative h-[60vh] min-h-[400px] max-h-[600px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+            @foreach($heroSlides as $index => $slide)
+            <div class="hero-slide {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}">
+                {{-- Background Image/Video --}}
+                <div class="absolute inset-0">
+                    @if($slide->video_url)
+                        <video src="{{ $slide->video_url }}" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+                    @else
+                        <picture>
+                            @if($slide->image_srcset_webp)
+                                <source srcset="{{ $slide->image_srcset_webp }}" type="image/webp">
+                            @endif
+                            <img 
+                                src="{{ $slide->image_fallback_url ?? $slide->image_url }}" 
+                                @if($slide->image_srcset) 
+                                    srcset="{{ $slide->image_srcset }}" 
+                                    sizes="100vw"
+                                @endif
+                                alt="{{ $slide->title }}"
+                                class="w-full h-full object-cover"
+                            />
+                        </picture>
+                    @endif
+                    {{-- Overlay --}}
+                    <div class="absolute inset-0 bg-black/40"></div>
+                </div>
+                
+                {{-- Content --}}
+                <div class="relative z-10 h-full flex items-center">
+                    <div class="w-full px-8 md:px-12">
+                        <div class="max-w-2xl">
+                            @if($slide->subtitle)
+                                <p class="text-emerald-300 uppercase tracking-wider text-sm font-semibold mb-4" data-aos="fade-up" data-aos-delay="100">
+                                    {{ $slide->subtitle }}
+                                </p>
+                            @endif
+                            
+                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-4" data-aos="fade-up" data-aos-delay="200">
+                                {{ $slide->title }}
+                            </h1>
+                            
+                            @if($slide->description)
+                                <p class="text-lg md:text-xl text-slate-200 mb-6 max-w-xl leading-relaxed" data-aos="fade-up" data-aos-delay="300">
+                                    {{ $slide->description }}
+                                </p>
+                            @endif
+                            
+                            @if($slide->button_text && $slide->button_url)
+                                <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="400">
+                                    <a href="{{ $slide->button_url }}" class="
+                                        px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105
+                                        @if($slide->button_style === 'primary')
+                                            bg-emerald-500 text-slate-900 hover:bg-emerald-400 shadow-lg hover:shadow-emerald-500/25
+                                        @elseif($slide->button_style === 'secondary')
+                                            bg-white text-slate-900 hover:bg-slate-100 shadow-lg
+                                        @else
+                                            border-2 border-white text-white hover:bg-white hover:text-slate-900
+                                        @endif
+                                    ">
+                                        {{ $slide->button_text }}
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+            
+            {{-- Navigation Arrows --}}
+            @if($heroSlides->count() > 1)
+            <button id="prev-slide" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <button id="next-slide" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            {{-- Dots Indicator --}}
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+                @foreach($heroSlides as $index => $slide)
+                <button class="slide-dot w-3 h-3 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-emerald-500' : 'bg-white/50' }}" data-slide="{{ $index }}"></button>
+                @endforeach
+            </div>
+            @endif
+            </div>
+        </div>
+    </section>
+    @else
+    {{-- Fallback to original hero section if no slides --}}
     <section class="relative overflow-hidden">
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute -top-20 -left-20 w-[40rem] h-[40rem] rounded-full blur-3xl opacity-30"
@@ -53,6 +158,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     @php($badges = \App\Models\Badge::query()->where('is_active', true)->orderBy('order')->get())
     @if($settings?->show_badges_section && $badges->count())
@@ -215,4 +321,161 @@
             </div>
         </div>
     </section>
+
+{{-- Hero Slider Styles and JavaScript --}}
+@if($heroSlides->count() > 0)
+<style>
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.slide-dot.active {
+    background-color: rgb(16 185 129) !important;
+    transform: scale(1.2);
+}
+
+#hero-slider {
+    overflow: hidden;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('hero-slider');
+    if (!slider) return;
+    
+    const slides = slider.querySelectorAll('.hero-slide');
+    const dots = slider.querySelectorAll('.slide-dot');
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    
+    let currentSlide = 0;
+    let autoPlayInterval;
+    
+    // Show slide function
+    function showSlide(index) {
+        // Hide all slides
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        // Show current slide
+        if (slides[index]) {
+            slides[index].classList.add('active');
+            dots[index]?.classList.add('active');
+            currentSlide = index;
+        }
+    }
+    
+    // Next slide
+    function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+    }
+    
+    // Previous slide
+    function prevSlide() {
+        const prev = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prev);
+    }
+    
+    // Auto play
+    function startAutoPlay() {
+        if (slides.length > 1) {
+            autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+    }
+    
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+    
+    // Event listeners
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            stopAutoPlay();
+            startAutoPlay(); // Restart auto play
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            stopAutoPlay();
+            startAutoPlay(); // Restart auto play
+        });
+    }
+    
+    // Dot navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+            stopAutoPlay();
+            startAutoPlay(); // Restart auto play
+        });
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+            stopAutoPlay();
+            startAutoPlay();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+            stopAutoPlay();
+            startAutoPlay();
+        }
+    });
+    
+    // Pause on hover
+    slider.addEventListener('mouseenter', stopAutoPlay);
+    slider.addEventListener('mouseleave', startAutoPlay);
+    
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoPlay();
+    });
+    
+    slider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        startAutoPlay();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                nextSlide(); // Swipe left - next slide
+            } else {
+                prevSlide(); // Swipe right - previous slide
+            }
+        }
+    }
+    
+    // Initialize
+    showSlide(0);
+    startAutoPlay();
+});
+</script>
+@endif
 @endsection
