@@ -385,7 +385,7 @@
     <div class="border-t border-white/10">
         <div class="mx-auto max-w-7xl px-4 py-5 text-sm text-slate-400 flex flex-col md:flex-row items-center justify-between gap-3">
             <p>&copy; {{ now()->year }} {{ $settings->site_name ?? 'Construction Co.' }}. All rights reserved.</p>
-            <p>Built with Laravel + Filament • <a class="text-emerald-300 hover:text-emerald-200" href="{{ route('safety.index') }}">Safety</a> • <a class="text-emerald-300 hover:text-emerald-200" href="{{ route('partners.prequal') }}">Prequalify</a></p>
+            <p>Developed by <a class="text-emerald-300 hover:text-emerald-200" href="https://www.linkedin.com/in/rokonuzzaman040/" target="_blank">Rokon Uzzaman</a> • <a class="text-emerald-300 hover:text-emerald-200" href="{{ route('safety.index') }}">Safety</a> • <a class="text-emerald-300 hover:text-emerald-200" href="{{ route('partners.prequal') }}">Prequalify</a></p>
         </div>
     </div>
 </footer>
