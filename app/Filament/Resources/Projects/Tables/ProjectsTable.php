@@ -30,6 +30,11 @@ class ProjectsTable
                 TextColumn::make('category')
                     ->searchable(),
                 ImageColumn::make('featured_image'),
+                TextColumn::make('gallery_count')
+                    ->label('Gallery')
+                    ->getStateUsing(fn ($record) => $record->gallery ? count($record->gallery) : 0)
+                    ->badge()
+                    ->color('info'),
                 TextColumn::make('started_at')
                     ->date()
                     ->sortable(),

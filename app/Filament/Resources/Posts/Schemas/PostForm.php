@@ -6,8 +6,10 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class PostForm
 {
@@ -16,12 +18,37 @@ class PostForm
         return $schema
             ->components([
                 TextInput::make('title')
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (string $operation, $state, $set) => 
+                        $operation === 'create' ? $set('slug', Str::slug($state)) : null
+                    ),
                 TextInput::make('slug')
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->helperText('Leave blank to auto-generate from title'),
                 Textarea::make('excerpt')
+                    ->label('Excerpt')
+                    ->helperText('Brief summary of the post')
                     ->columnSpanFull(),
-                Textarea::make('body')
+                RichEditor::make('body')
+                    ->label('Post Content')
+                    ->toolbarButtons([
+                        'attachFiles',
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'codeBlock',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'underline',
+                        'undo',
+                    ])
                     ->required()
                     ->columnSpanFull(),
                 FileUpload::make('featured_image')

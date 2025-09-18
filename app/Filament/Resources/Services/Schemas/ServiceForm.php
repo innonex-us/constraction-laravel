@@ -26,6 +26,8 @@ class ServiceForm
                     ->unique(ignoreRecord: true)
                     ->helperText('Leave blank to auto-generate from name'),
                 Textarea::make('excerpt')
+                    ->label('Service Summary')
+                    ->helperText('Brief description of the service')
                     ->columnSpanFull(),
                 RichEditor::make('content')
                     ->label('Content')
