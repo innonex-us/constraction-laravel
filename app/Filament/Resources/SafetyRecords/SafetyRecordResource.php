@@ -26,6 +26,7 @@ class SafetyRecordResource extends Resource
     protected static ?string $navigationLabel = 'Safety Records';
     protected static string|UnitEnum|null $navigationGroup = 'Operations';
     protected static ?int $navigationSort = 50;
+    protected static bool $shouldRegisterNavigation = false; // Hide from navigation
 
     protected static ?string $recordTitleAttribute = 'year';
 

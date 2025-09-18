@@ -130,11 +130,11 @@
                     <dl class="mt-10 grid grid-cols-3 gap-6 text-center">
                         <div class="p-4 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in">
                             <dt class="text-sm text-slate-400">Years</dt>
-                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_years ?? '25+' }}</dd>
+                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_years ?? '25' }}</dd>
                         </div>
                         <div class="p-4 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="100">
                             <dt class="text-sm text-slate-400">Projects</dt>
-                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_projects ?? '500+' }}</dd>
+                            <dd class="mt-1 text-3xl font-bold">{{ $settings->stat_projects ?? '500' }}</dd>
                         </div>
                         <a href="/safety" class="block p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 transition group" data-aos="zoom-in" data-aos-delay="200">
                             <dt class="text-sm text-slate-400 group-hover:text-emerald-300 transition">Safety EMR</dt>

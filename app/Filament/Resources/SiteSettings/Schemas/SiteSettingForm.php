@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Placeholder;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Utilities\Set;
 
@@ -19,7 +20,30 @@ class SiteSettingForm
     {
         return $schema
             ->components([
-                TextInput::make('site_name'),
+                Fieldset::make('Quick Access')->schema([
+                    Placeholder::make('hero_slider_info')
+                        ->label('🎬 Hero Slider Management')
+                        ->content('Hero content is now managed via the dedicated Hero Slider section. Go to Content → Hero Slider to add/edit slides.')
+                        ->columnSpanFull(),
+                        
+                    Placeholder::make('content_management_info')
+                        ->label('📝 Content Management')
+                        ->content('• About Us: Content → Pages (look for green "About Us" badge)
+• Services: Portfolio → Services (now with gallery support)
+• Projects: Portfolio → Projects (now with gallery support)
+• News: Content → Posts (rich text editor)')
+                        ->columnSpanFull(),
+                        
+                    Placeholder::make('navbar_info')
+                        ->label('🧭 Navigation Updates')
+                        ->content('Navbar has been updated with dropdowns for Services and Projects. Safety and Partners links have been removed for a cleaner design.')
+                        ->columnSpanFull(),
+                ])->columnSpanFull(),
+                    
+                Fieldset::make('Basic Information')->schema([
+                    TextInput::make('site_name')
+                        ->label('Site Name')
+                        ->required(),
                 FileUpload::make('logo_path')
                     ->label('Logo')
                     ->image()
@@ -33,6 +57,18 @@ class SiteSettingForm
                     ->imageResizeTargetHeight('200')
                     ->previewable(true)
                     ->imagePreviewHeight('120'),
+                    
+                    Textarea::make('address')
+                        ->label('Company Address')
+                        ->columnSpanFull(),
+                    TextInput::make('phone')
+                        ->label('Phone Number')
+                        ->tel(),
+                    TextInput::make('email')
+                        ->label('Email Address')
+                        ->email(),
+                ])->columnSpanFull(),
+                
                 Fieldset::make('Brand Colors')->schema([
                     Grid::make(12)->schema([
                         Select::make('primary_color_preset')
@@ -66,18 +102,15 @@ class SiteSettingForm
                             ->columnSpan(6),
                     ])->columns(12),
                 ]),
-                Textarea::make('address')
-                    ->columnSpanFull(),
-                TextInput::make('phone')
-                    ->tel(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email(),
-                TextInput::make('headline'),
-                Textarea::make('subheadline'),
-                Fieldset::make('Hero Media')->schema([
+                Fieldset::make('Fallback Hero Content')->schema([
+                    TextInput::make('headline')
+                        ->label('Fallback Headline')
+                        ->helperText('Used when no hero slides are active'),
+                    Textarea::make('subheadline')
+                        ->label('Fallback Subheadline')
+                        ->helperText('Used when no hero slides are active'),
                     FileUpload::make('hero_image')
-                        ->label('Hero Image')
+                        ->label('Fallback Hero Image')
                         ->image()
                         ->disk('public')
                         ->directory('hero')
@@ -89,14 +122,19 @@ class SiteSettingForm
                         ->imageResizeTargetHeight('1080')
                         ->previewable(true)
                         ->imagePreviewHeight('200')
-                        ->helperText('Recommended size: 1920x1080px')
+                        ->helperText('Fallback image when no hero slides are active. Recommended size: 1920x1080px')
                         ->columnSpanFull(),
                     TextInput::make('hero_video_url')
-                        ->label('Hero Video URL')
+                        ->label('Fallback Hero Video URL')
                         ->url()
-                        ->helperText('Video will take priority over image if both are provided')
+                        ->helperText('Fallback video when no hero slides are active')
                         ->columnSpanFull(),
                 ])->columnSpanFull(),
+                
+                Placeholder::make('hero_fallback_note')
+                    ->label('⚠️ Important Note')
+                    ->content('Hero content is now managed via the Hero Slider. These fields are only used as fallback when no slides are active.')
+                    ->columnSpanFull(),
                 Fieldset::make('Homepage Stats')->schema([
                     TextInput::make('stat_years')->label('Years'),
                     TextInput::make('stat_projects')->label('Projects'),
@@ -181,6 +219,14 @@ class SiteSettingForm
                             ->label('Badges Heading')
                             ->default('Certifications & Affiliations'),
                     ])->columns(2),
+                    
+                    // New sections for the updated homepage
+                    Grid::make(1)->schema([
+                        Placeholder::make('new_sections_info')
+                            ->label('✨ New Homepage Sections')
+                            ->content('Your homepage now includes: Company Statistics, About Us Preview, How We Work Process, and Why Choose Us sections. These are automatically displayed and don\'t require additional settings.')
+                            ->columnSpanFull(),
+                    ]),
                 ])->columnSpanFull(),
                 Textarea::make('social_links')
                     ->columnSpanFull(),

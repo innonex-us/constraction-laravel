@@ -137,18 +137,58 @@
             </a>
             <nav class="hidden lg:flex items-center gap-6 text-sm">
                 <a href="/page/about" class="hover:text-emerald-300 transition">About Us</a>
-                <a href="/services" class="hover:text-emerald-300 transition">Services</a>
-                <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
+                
+                {{-- Services Dropdown --}}
+                <div class="relative group">
+                    <button class="hover:text-emerald-300 transition flex items-center gap-1">
+                        Services
+                        <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="absolute top-full left-0 mt-2 w-64 bg-slate-900/95 backdrop-blur-sm border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        @php($navServices = \App\Models\Service::query()->where('is_active', true)->orderBy('order')->take(8)->get())
+                        <div class="p-2">
+                            <a href="/services" class="block px-3 py-2 text-emerald-300 hover:bg-white/5 rounded-md transition font-medium">All Services</a>
+                            <div class="border-t border-white/10 my-2"></div>
+                            @foreach($navServices as $service)
+                                <a href="{{ route('services.show', $service->slug) }}" class="block px-3 py-2 hover:bg-white/5 hover:text-emerald-300 rounded-md transition">
+                                    {{ $service->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                
+                {{-- Projects Dropdown --}}
+                <div class="relative group">
+                    <button class="hover:text-emerald-300 transition flex items-center gap-1">
+                        Projects
+                        <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="absolute top-full left-0 mt-2 w-64 bg-slate-900/95 backdrop-blur-sm border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        @php($navProjects = \App\Models\Project::query()->orderByDesc('is_featured')->latest('completed_at')->take(8)->get())
+                        <div class="p-2">
+                            <a href="/projects" class="block px-3 py-2 text-emerald-300 hover:bg-white/5 rounded-md transition font-medium">All Projects</a>
+                            <div class="border-t border-white/10 my-2"></div>
+                            @foreach($navProjects as $project)
+                                <a href="{{ route('projects.show', $project->slug) }}" class="block px-3 py-2 hover:bg-white/5 hover:text-emerald-300 rounded-md transition">
+                                    {{ $project->title }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                
                 <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
-                <a href="/safety" class="hover:text-emerald-300 transition">Safety</a>
                 <a href="/news" class="hover:text-emerald-300 transition">News</a>
                 @php($navPages = \App\Models\Page::query()->where('is_published', true)->where('show_in_nav', true)->orderBy('nav_order')->take(6)->get())
                 @foreach($navPages as $p)
                     <a href="{{ url('/page/'.$p->slug) }}" class="hover:text-emerald-300 transition">{{ $p->title }}</a>
                 @endforeach
-                <a href="/partners" class="hover:text-emerald-300 transition">Partners</a>
                 <a href="/contact" class="hover:text-emerald-300 transition">Contact</a>
-                <a href="/admin" data-turbo="false" class="ml-2 px-3 py-1.5 rounded-md bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20">Admin</a>
             </nav>
             <button id="menu-btn" class="lg:hidden inline-flex items-center justify-center rounded-md border border-white/10 px-3 py-2 min-h-[44px] min-w-[44px]" aria-expanded="false" aria-controls="mobile-nav">
                 <span class="sr-only">Open menu</span>
@@ -187,12 +227,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
-                    <a href="/safety" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>Safety</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
                     <a href="/news" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
                         <span>News</span>
                         <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -208,27 +242,12 @@
                             </svg>
                         </a>
                     @endforeach
-                    <a href="/partners" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>Partners</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
                     <a href="/contact" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
                         <span>Contact</span>
                         <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
-                    <div class="border-t border-white/10 mt-4 pt-4">
-                        <a href="/admin" data-turbo="false" class="mobile-button bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 w-full">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Admin Panel
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

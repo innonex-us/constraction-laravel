@@ -26,6 +26,7 @@ class PrequalificationResource extends Resource
     protected static ?string $navigationLabel = 'Prequalifications';
     protected static string|UnitEnum|null $navigationGroup = 'Operations';
     protected static ?int $navigationSort = 20;
+    protected static bool $shouldRegisterNavigation = false; // Hide from navigation
 
     protected static ?string $recordTitleAttribute = 'company_name';
 
