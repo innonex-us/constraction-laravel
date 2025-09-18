@@ -31,7 +31,7 @@ class CheckInstallation
         
         if (!File::exists($installationLockFile)) {
             // Installation not complete, redirect to installation wizard
-            return redirect()->route('install.welcome');
+            return redirect()->route('install.index');
         }
         
         return $next($request);
