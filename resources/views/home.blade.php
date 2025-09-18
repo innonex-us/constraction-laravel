@@ -13,7 +13,7 @@
                  style="background: radial-gradient(circle at center, var(--brand-2), transparent 60%)"></div>
         </div>
         <div class="mx-auto max-w-7xl px-4 relative z-10">
-            <div id="hero-slider" class="relative h-[60vh] min-h-[400px] max-h-[600px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+            <div id="hero-slider" class="relative h-[50vh] md:h-[60vh] min-h-[350px] md:min-h-[400px] max-h-[500px] md:max-h-[600px] rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
             @foreach($heroSlides as $index => $slide)
             <div class="hero-slide {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}">
                 {{-- Background Image/Video --}}
@@ -42,20 +42,20 @@
                 
                 {{-- Content --}}
                 <div class="relative z-10 h-full flex items-center">
-                    <div class="w-full px-8 md:px-12">
-                        <div class="max-w-2xl">
+                    <div class="w-full px-4 md:px-8 lg:px-12">
+                        <div class="max-w-xl md:max-w-2xl">
                             @if($slide->subtitle)
-                                <p class="text-emerald-300 uppercase tracking-wider text-sm font-semibold mb-4" data-aos="fade-up" data-aos-delay="100">
+                                <p class="text-emerald-300 uppercase tracking-wider text-xs md:text-sm font-semibold mb-3 md:mb-4" data-aos="fade-up" data-aos-delay="100">
                                     {{ $slide->subtitle }}
                                 </p>
                             @endif
                             
-                            <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white mb-4" data-aos="fade-up" data-aos-delay="200">
+                            <h1 class="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight text-white mb-3 md:mb-4" data-aos="fade-up" data-aos-delay="200">
                                 {{ $slide->title }}
                             </h1>
                             
                             @if($slide->description)
-                                <p class="text-lg md:text-xl text-slate-200 mb-6 max-w-xl leading-relaxed" data-aos="fade-up" data-aos-delay="300">
+                                <p class="text-base md:text-lg lg:text-xl text-slate-200 mb-4 md:mb-6 max-w-xl leading-relaxed" data-aos="fade-up" data-aos-delay="300">
                                     {{ $slide->description }}
                                 </p>
                             @endif
@@ -63,7 +63,7 @@
                             @if($slide->button_text && $slide->button_url)
                                 <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="400">
                                     <a href="{{ $slide->button_url }}" class="
-                                        px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105
+                                        px-4 py-2.5 md:px-6 md:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 transform hover:scale-105
                                         @if($slide->button_style === 'primary')
                                             bg-emerald-500 text-slate-900 hover:bg-emerald-400 shadow-lg hover:shadow-emerald-500/25
                                         @elseif($slide->button_style === 'secondary')
@@ -84,23 +84,23 @@
             
             {{-- Navigation Arrows --}}
             @if($heroSlides->count() > 1)
-            <button id="prev-slide" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="prev-slide" class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300">
+                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
             </button>
-            <button id="next-slide" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="next-slide" class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300">
+                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </button>
             
             {{-- Dots Indicator --}}
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+            <!-- <div class="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-1.5 md:space-x-2">
                 @foreach($heroSlides as $index => $slide)
-                <button class="slide-dot w-3 h-3 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-emerald-500' : 'bg-white/50' }}" data-slide="{{ $index }}"></button>
+                <button class="slide-dot w-2 h-2 md:w-2 md:h-2 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-emerald-500' : 'bg-white/50' }}" data-slide="{{ $index }}"></button>
                 @endforeach
-            </div>
+            </div> -->
             @endif
             </div>
         </div>
@@ -593,6 +593,12 @@
 .slide-dot.active {
     background-color: rgb(16 185 129) !important;
     transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .slide-dot.active {
+        transform: scale(1.1);
+    }
 }
 
 #hero-slider {
