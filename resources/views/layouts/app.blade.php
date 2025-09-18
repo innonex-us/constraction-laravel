@@ -96,10 +96,15 @@
                 min-width: 44px;
             }
             .nav-link {
-                padding: 0.75rem 1rem;
-                margin: 0.25rem 0;
-                border-radius: 0.5rem;
-                display: block;
+                padding: 1rem;
+                margin: 0.125rem 0;
+                border-radius: 0.75rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 1rem;
+                min-height: 48px;
+                touch-action: manipulation;
             }
         }
         /* Brand overrides to ensure admin-set colors take effect even without a fresh build */
@@ -200,52 +205,74 @@
     </div>
     <!-- Enhanced Mobile Navigation -->
     <div id="mobile-nav" class="lg:hidden hidden">
-        <div class="absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-b border-white/10">
-            <div class="mx-auto max-w-7xl px-4 py-6">
-                <div class="grid gap-1">
+        <div class="absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-b border-white/10 max-h-[80vh] overflow-y-auto">
+            <div class="px-4 py-4">
+                <div class="space-y-2">
                     <a href="/page/about" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>About Us</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="font-medium">About Us</span>
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
-                    <a href="/services" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>Services</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                    <a href="/projects" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>Projects</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </a>
+                    
+                    {{-- Mobile Services Section --}}
+                    <div class="nav-link bg-white/5 border border-white/10">
+                        <span class="font-medium text-emerald-300">Services</span>
+                    </div>
+                    @php($mobileServices = \App\Models\Service::query()->where('is_active', true)->orderBy('order')->take(6)->get())
+                    <div class="ml-4 space-y-1">
+                        <a href="/services" class="nav-link text-sm hover:text-emerald-300 hover:bg-white/5 transition">
+                            <span>All Services</span>
+                        </a>
+                        @foreach($mobileServices as $service)
+                            <a href="{{ route('services.show', $service->slug) }}" class="nav-link text-sm hover:text-emerald-300 hover:bg-white/5 transition">
+                                <span>{{ $service->name }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                    
+                    {{-- Mobile Projects Section --}}
+                    <div class="nav-link bg-white/5 border border-white/10">
+                        <span class="font-medium text-emerald-300">Projects</span>
+                    </div>
+                    @php($mobileProjects = \App\Models\Project::query()->orderByDesc('is_featured')->latest('completed_at')->take(6)->get())
+                    <div class="ml-4 space-y-1">
+                        <a href="/projects" class="nav-link text-sm hover:text-emerald-300 hover:bg-white/5 transition">
+                            <span>All Projects</span>
+                        </a>
+                        @foreach($mobileProjects as $project)
+                            <a href="{{ route('projects.show', $project->slug) }}" class="nav-link text-sm hover:text-emerald-300 hover:bg-white/5 transition">
+                                <span>{{ $project->title }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                    
                     <a href="/gallery" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>Gallery</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="font-medium">Gallery</span>
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
                     <a href="/news" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>News</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="font-medium">News</span>
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
                     @php($navPages = \App\Models\Page::query()->where('is_published', true)->where('show_in_nav', true)->orderBy('nav_order')->take(6)->get())
                     @foreach($navPages as $p)
                         <a href="{{ url('/page/'.$p->slug) }}" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                            <span>{{ $p->title }}</span>
-                            <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <span class="font-medium">{{ $p->title }}</span>
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
                         </a>
                     @endforeach
-                    <a href="/contact" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
-                        <span>Contact</span>
-                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    
+                    <a href="/contact" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition border-t border-white/10 mt-4 pt-4">
+                        <span class="font-semibold text-emerald-300">Contact Us</span>
+                        <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                         </svg>
                     </a>
                 </div>
