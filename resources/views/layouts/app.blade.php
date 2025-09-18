@@ -136,6 +136,7 @@
                 @endif
             </a>
             <nav class="hidden lg:flex items-center gap-6 text-sm">
+                <a href="/page/about" class="hover:text-emerald-300 transition">About Us</a>
                 <a href="/services" class="hover:text-emerald-300 transition">Services</a>
                 <a href="/projects" class="hover:text-emerald-300 transition">Projects</a>
                 <a href="/gallery" class="hover:text-emerald-300 transition">Gallery</a>
@@ -162,6 +163,12 @@
         <div class="absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-b border-white/10">
             <div class="mx-auto max-w-7xl px-4 py-6">
                 <div class="grid gap-1">
+                    <a href="/page/about" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
+                        <span>About Us</span>
+                        <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                     <a href="/services" class="nav-link hover:text-emerald-300 hover:bg-white/5 transition">
                         <span>Services</span>
                         <svg class="w-5 h-5 ml-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

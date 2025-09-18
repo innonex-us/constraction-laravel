@@ -24,6 +24,11 @@ class ServicesTable
                 TextColumn::make('icon')
                     ->searchable(),
                 ImageColumn::make('image'),
+                TextColumn::make('gallery_count')
+                    ->label('Gallery')
+                    ->getStateUsing(fn ($record) => $record->gallery ? count($record->gallery) : 0)
+                    ->badge()
+                    ->color('success'),
                 TextColumn::make('order')
                     ->numeric()
                     ->sortable(),

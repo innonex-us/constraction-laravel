@@ -18,7 +18,10 @@ class PagesTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge()
+                    ->color(fn ($record) => $record->slug === 'about' ? 'success' : 'gray')
+                    ->description(fn ($record) => $record->slug === 'about' ? 'Main About Us page' : null),
                 TextColumn::make('slug')
                     ->searchable(),
                 ImageColumn::make('hero_image'),
