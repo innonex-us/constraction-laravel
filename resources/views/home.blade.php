@@ -160,6 +160,28 @@
     </section>
     @endif
 
+    {{-- Company Statistics Section --}}
+    <section class="mx-auto max-w-7xl px-4 py-16">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center p-6 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in">
+                <div class="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">{{ $settings->stat_years ?? '25' }}+</div>
+                <div class="text-slate-300 text-sm font-medium">Years of Excellence</div>
+            </div>
+            <div class="text-center p-6 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="100">
+                <div class="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">{{ $settings->stat_projects ?? '500' }}+</div>
+                <div class="text-slate-300 text-sm font-medium">Projects Completed</div>
+            </div>
+            <div class="text-center p-6 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="200">
+                <div class="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">{{ $settings->stat_emr ?? '0.62' }}</div>
+                <div class="text-slate-300 text-sm font-medium">Safety EMR Rating</div>
+            </div>
+            <div class="text-center p-6 rounded-xl bg-white/5 border border-white/10" data-aos="zoom-in" data-aos-delay="300">
+                <div class="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">100%</div>
+                <div class="text-slate-300 text-sm font-medium">Client Satisfaction</div>
+            </div>
+        </div>
+    </section>
+
     @php($badges = \App\Models\Badge::query()->where('is_active', true)->orderBy('order')->get())
     @if($settings?->show_badges_section && $badges->count())
     <section class="mx-auto max-w-7xl px-4 py-8">
@@ -180,6 +202,61 @@
     </section>
     @endif
 
+    {{-- About Us Preview Section --}}
+    <section class="mx-auto max-w-7xl px-4 py-16">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                    Building Trust Through <span class="text-emerald-400">Excellence</span>
+                </h2>
+                <p class="text-slate-300 text-lg leading-relaxed mb-6">
+                    With over {{ $settings->stat_years ?? '25' }} years of experience in the construction industry, we've built our reputation on delivering exceptional results. From commercial buildings to residential projects, our team combines traditional craftsmanship with modern technology.
+                </p>
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                        <span class="text-slate-300">Licensed & Insured Professionals</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                        <span class="text-slate-300">Award-Winning Safety Record</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                        <span class="text-slate-300">On-Time & Within Budget Delivery</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                        <span class="text-slate-300">24/7 Project Support</span>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <a href="/page/about" class="px-6 py-3 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">Learn More About Us</a>
+                    <a href="/contact" class="px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition">Get Quote</a>
+                </div>
+            </div>
+            <div class="relative" data-aos="fade-left">
+                <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1600&auto=format&fit=crop" alt="Construction team at work" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+                {{-- Floating stats card --}}
+                <div class="absolute -bottom-6 -left-6 bg-slate-900/95 backdrop-blur-sm border border-white/10 rounded-xl p-4 shadow-2xl">
+                    <div class="flex items-center gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-emerald-400">A+</div>
+                            <div class="text-xs text-slate-400">BBB Rating</div>
+                        </div>
+                        <div class="w-px h-8 bg-white/20"></div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-emerald-400">{{ $settings->stat_emr ?? '0.62' }}</div>
+                            <div class="text-xs text-slate-400">Safety EMR</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     @if($settings?->show_services_section && $services->count())
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
@@ -199,6 +276,81 @@
         </div>
     </section>
     @endif
+
+    {{-- How We Work Process Section --}}
+    <section class="mx-auto max-w-7xl px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">How We Work</h2>
+            <p class="text-slate-300 text-lg max-w-2xl mx-auto">Our proven construction process ensures quality results, on-time delivery, and complete client satisfaction from start to finish.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-4 gap-8">
+            {{-- Step 1 --}}
+            <div class="text-center" data-aos="fade-up" data-aos-delay="0">
+                <div class="relative mb-6">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 font-bold text-sm">1</div>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Planning & Design</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">We work closely with you to understand your vision and create detailed plans that meet your needs and budget.</p>
+            </div>
+
+            {{-- Step 2 --}}
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative mb-6">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 font-bold text-sm">2</div>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Permits & Approval</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Our team handles all necessary permits and regulatory approvals to ensure your project meets all local requirements.</p>
+            </div>
+
+            {{-- Step 3 --}}
+            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative mb-6">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 font-bold text-sm">3</div>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Construction</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Expert craftsmen execute the project with precision, maintaining the highest safety and quality standards throughout.</p>
+            </div>
+
+            {{-- Step 4 --}}
+            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="relative mb-6">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-slate-900 font-bold text-sm">4</div>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Completion & Handover</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Final inspections, quality checks, and project handover with comprehensive documentation and warranties.</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="/contact" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-emerald-500 text-slate-900 font-semibold hover:bg-emerald-400 transition">
+                Start Your Project Today
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
 
     @if($settings?->show_projects_section && $projects->count())
     <section class="mx-auto max-w-7xl px-4 py-16">
@@ -223,6 +375,82 @@
         </div>
     </section>
     @endif
+
+    {{-- Why Choose Us Section --}}
+    <section class="mx-auto max-w-7xl px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose Us?</h2>
+            <p class="text-slate-300 text-lg max-w-2xl mx-auto">We stand out in the construction industry through our commitment to excellence, innovation, and client satisfaction.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            {{-- Feature 1 --}}
+            <div class="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-aos="zoom-in">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Safety First</h3>
+                <p class="text-slate-400 leading-relaxed">Industry-leading safety record with comprehensive training and protocols to protect workers and clients.</p>
+            </div>
+
+            {{-- Feature 2 --}}
+            <div class="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-aos="zoom-in" data-aos-delay="100">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">On-Time Delivery</h3>
+                <p class="text-slate-400 leading-relaxed">Proven track record of completing projects on schedule and within budget through efficient project management.</p>
+            </div>
+
+            {{-- Feature 3 --}}
+            <div class="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-aos="zoom-in" data-aos-delay="200">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Quality Craftsmanship</h3>
+                <p class="text-slate-400 leading-relaxed">Skilled craftsmen and premium materials ensure lasting results that exceed industry standards.</p>
+            </div>
+
+            {{-- Feature 4 --}}
+            <div class="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-aos="zoom-in" data-aos-delay="300">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Experienced Team</h3>
+                <p class="text-slate-400 leading-relaxed">{{ $settings->stat_years ?? '25' }}+ years of combined experience with licensed professionals and certified specialists.</p>
+            </div>
+
+            {{-- Feature 5 --}}
+            <div class="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-aos="zoom-in" data-aos-delay="400">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">Transparent Pricing</h3>
+                <p class="text-slate-400 leading-relaxed">Clear, upfront pricing with detailed estimates and no hidden costs throughout the project lifecycle.</p>
+            </div>
+
+            {{-- Feature 6 --}}
+            <div class="text-center p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition" data-aos="zoom-in" data-aos-delay="500">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3">24/7 Support</h3>
+                <p class="text-slate-400 leading-relaxed">Dedicated project support and communication throughout construction with regular updates and availability.</p>
+            </div>
+        </div>
+    </section>
 
     @if($settings?->show_testimonials_section && $testimonials->count())
     <section class="mx-auto max-w-7xl px-4 py-16">
@@ -266,28 +494,49 @@
     </section>
     @endif
 
+    {{-- Latest News & Updates Section --}}
     @if($settings?->show_news_section && $posts->count())
-    {{-- Latest news / insights --}}
     <section class="mx-auto max-w-7xl px-4 py-16">
         <div class="flex items-end justify-between gap-6 mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold">{{ $settings->news_section_heading ?? 'Latest News' }}</h2>
-            <a href="{{ route('news.index') }}" class="text-emerald-300 hover:text-emerald-200">All posts</a>
+            <div>
+                <h2 class="text-2xl md:text-3xl font-bold mb-2">{{ $settings->news_section_heading ?? 'Latest News' }}</h2>
+                <p class="text-slate-400">Stay updated with our latest projects, achievements, and industry insights.</p>
+            </div>
+            <a href="/news" class="text-emerald-300 hover:text-emerald-200 flex items-center gap-2">
+                View all news
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
         </div>
-        <div class="grid md:grid-cols-3 gap-6">
-            @foreach(($posts ?? collect()) as $post)
-                <a href="{{ route('news.show', $post->slug) }}" class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
-                    <div class="aspect-[16/10] overflow-hidden bg-white/5">
-                        @php($imgUrl = $post->featured_image_url ?: ($settings?->logo_url ?: 'https://images.unsplash.com/photo-1581091870686-8e2980a57f5b?q=80&w=1600&auto=format&fit=crop'))
-                        <img loading="lazy" decoding="async" fetchpriority="low" src="{{ $imgUrl }}" @if($post->featured_image_srcset) srcset="{{ $post->featured_image_srcset }}" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" @endif class="w-full h-full object-cover group-hover:scale-[1.03] transition" />
+        <div class="grid md:grid-cols-3 gap-8">
+            @foreach($posts as $post)
+                <article class="group rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition" data-aos="fade-up">
+                    @if($post->featured_image_url)
+                        <div class="aspect-video overflow-hidden">
+                            <img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        </div>
+                    @endif
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                            <time datetime="{{ $post->published_at?->format('Y-m-d') }}">
+                                {{ $post->published_at?->format('M j, Y') }}
+                            </time>
+                            <span>•</span>
+                            <span>{{ $post->published_at?->diffForHumans() }}</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 group-hover:text-emerald-300 transition">
+                            <a href="{{ route('news.show', $post->slug) }}">{{ $post->title }}</a>
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">{{ $post->excerpt }}</p>
+                        <a href="{{ route('news.show', $post->slug) }}" class="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-200 text-sm font-medium">
+                            Read more
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
                     </div>
-                    <div class="p-5">
-                        <h3 class="text-lg font-semibold">{{ $post->title }}</h3>
-                        <p class="text-slate-400 text-sm mt-1">{{ $post->excerpt }}</p>
-                        @if($post->published_at)
-                            <p class="text-slate-500 text-xs mt-3">{{ $post->published_at->format('M d, Y') }}</p>
-                        @endif
-                    </div>
-                </a>
+                </article>
             @endforeach
         </div>
     </section>
